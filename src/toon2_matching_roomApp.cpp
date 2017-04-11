@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "connection_receiver.h"
+#include "connection_server.h"
 using namespace cinder;
 using namespace cinder::app;
 class toon2_matching_roomApp : public App
 {
-    connection_receiver _receiver;
+    connection_server _receiver;
     float _prev_elapsed_seconds = 0.0F;
     float _delta_seconds = 0.0F;
     float _gradation_seed = 0.0F;
@@ -23,7 +23,7 @@ void toon2_matching_roomApp::update( )
     _delta_seconds = getElapsedSeconds( ) - _prev_elapsed_seconds;
     _prev_elapsed_seconds = getElapsedSeconds( );
     _gradation_seed += _delta_seconds;
-    _receiver.run( );
+    _receiver.update( );
 }
 void toon2_matching_roomApp::draw( )
 {
