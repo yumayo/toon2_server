@@ -8,7 +8,7 @@ connection_receiver::~connection_receiver( )
 {
     delete _m;
 }
-void connection_receiver::update( )
+void connection_receiver::run( )
 {
     _m->run( );
 }

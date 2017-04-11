@@ -23,7 +23,7 @@ void toon2_matching_roomApp::update( )
     _delta_seconds = getElapsedSeconds( ) - _prev_elapsed_seconds;
     _prev_elapsed_seconds = getElapsedSeconds( );
     _gradation_seed += _delta_seconds;
-    _receiver.update( );
+    _receiver.run( );
 }
 void toon2_matching_roomApp::draw( )
 {

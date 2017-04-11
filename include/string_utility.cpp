@@ -94,14 +94,3 @@ std::string getSystemTimeNamed( )
 }
 }
 }
-#include <fstream>
-WriteOnDestroyed::WriteOnDestroyed( std::string const & filename )
-    : _filename( filename )
-{
-}
-WriteOnDestroyed::~WriteOnDestroyed( )
-{
-    auto writable_path = cinder::app::getWritablePath( );
-    std::ofstream output( writable_path + _filename );
-    output << *this;
-}

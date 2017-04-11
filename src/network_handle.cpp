@@ -1,7 +1,5 @@
 #include "network_handle.h"
-namespace network
-{
-network_handle::network_handle( std::string const & ip_address, std::string const & port )
+network_handle::network_handle( std::string const & ip_address, int const & port )
     : ip_address( ip_address )
     , port( port )
 {
@@ -9,16 +7,18 @@ network_handle::network_handle( std::string const & ip_address, std::string cons
 bool network_handle::operator==( network_handle const & other ) const
 {
     return 
-        this->_name == other._name &&
         this->ip_address == other.ip_address &&
-        this->port == other.ip_address;
+        this->port == other.port;
 }
-void network_handle::set_name( std::string const & value )
+bool network_handle::operator<( network_handle const & other ) const
 {
-    _name = value;
+    return
+        this->ip_address < other.ip_address &&
+        this->port < other.port;
 }
-std::string const & network_handle::get_name( )
+bool network_handle::operator<=( network_handle const & other ) const
 {
-    return _name;
-}
+    return
+        this->ip_address <= other.ip_address &&
+        this->port <= other.port;
 }

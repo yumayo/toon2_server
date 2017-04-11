@@ -6,5 +6,5 @@ class connection_receiver
 public:
     connection_receiver( );
     ~connection_receiver( );
-    void update( );
+    void run( );
 };
