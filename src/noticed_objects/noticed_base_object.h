@@ -1,6 +1,6 @@
 #pragma once
 #include "jsoncpp/json.h"
-#include "../network_handle.h"
+#include "../network_object.h"
 #include "../connection_server.h"
 class noticed_base_object
 {

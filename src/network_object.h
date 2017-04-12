@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "use_destroy_object.h"
+#include <memory>
 class network_object : public use_destroy_object
 {
     // mutableはconst関数の中で値を書き換えたい場合に付けられる修飾子です。
@@ -21,3 +22,4 @@ public:
     std::string const ip_address;
     int const port;
 };
+using network_handle = std::weak_ptr<network_object>;

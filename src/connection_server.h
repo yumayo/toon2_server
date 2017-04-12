@@ -1,5 +1,5 @@
 #pragma once
-#include "network_handle.h"
+#include "network_object.h"
 #include "jsoncpp/json.h"
 #include <functional>
 class connection_server

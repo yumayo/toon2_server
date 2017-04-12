@@ -28,8 +28,8 @@ void connection_server::member::write( network_handle const & handle, Json::Valu
     {
         udp::resolver resolver( _io_service );
         udp::resolver::query query( udp::v4( ),
-                                    handle.ip_address,
-                                    boost::lexical_cast<std::string>( handle.port ) );
+                                    handle.lock( )->ip_address,
+                                    boost::lexical_cast<std::string>( handle.lock( )->port ) );
         Json::FastWriter writer;
         auto data = writer.write( send_data );
         _udp_socket.send_to( asio::buffer( data.c_str( ), data.size( ) ),
