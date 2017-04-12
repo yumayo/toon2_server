@@ -7,6 +7,8 @@ connection_server::member::member( connection_server& server, int const & port_n
     , _udp_socket( _io_service, udp::endpoint( udp::v4( ), port_num ) )
     , _client_manager( server )
 {
+    _remote_buffer.fill( 0 );
+
     _read( );
 
     _update_io_service = std::thread( [ this ]

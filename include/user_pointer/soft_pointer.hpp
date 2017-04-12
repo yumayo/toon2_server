@@ -53,12 +53,12 @@ inline std::shared_ptr<T> soft_pointer<T>::operator*( ) const
 template<class T>
 inline bool soft_pointer<T>::operator==( soft_pointer<T> const & other ) const
 {
-    return this->lock( ) == other->lock( );
+    return this->lock( ) == other.lock( );
 }
 template<class T>
 inline bool soft_pointer<T>::operator!=( soft_pointer<T> const & other ) const
 {
-    return this->lock( ) != other->lock( );
+    return this->lock( ) != other.lock( );
 }
 template<class T>
 inline bool soft_pointer<T>::operator!( ) const
