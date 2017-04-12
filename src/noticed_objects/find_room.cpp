@@ -3,7 +3,7 @@ find_room::find_room( connection_server & server )
     : noticed_base_object( server )
 {
 }
-void find_room::receive_entry_point( network_handle & handle, Json::Value const & data )
+void find_room::receive_entry_point( network_handle const& handle, Json::Value const & data )
 {
     if ( !_host )
     {

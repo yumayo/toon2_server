@@ -1,8 +1,8 @@
 ﻿#include "connection_server.h"
 #include "connection_server_member.h"
-connection_server::connection_server( )
+connection_server::connection_server( int const& port_number )
 {
-    _m = new member( *this, 25565 );
+    _m = new member( *this, port_number );
 }
 connection_server::~connection_server( )
 {
@@ -12,7 +12,7 @@ void connection_server::write( network_handle const & handle, Json::Value const 
 {
     _m->write( handle, send_data );
 }
-void connection_server::update( )
+void connection_server::update( float delta_second )
 {
-    _m->run( );
+    _m->update( delta_second );
 }

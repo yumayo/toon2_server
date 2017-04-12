@@ -10,5 +10,5 @@ public:
     noticed_base_object( connection_server& server );
     virtual ~noticed_base_object( ) {}
 public:
-    virtual void receive_entry_point( network_handle& handle, Json::Value const & data ) = 0;
+    virtual void receive_entry_point( network_handle const& handle, Json::Value const & data ) = 0;
 };

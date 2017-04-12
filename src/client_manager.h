@@ -17,4 +17,5 @@ public:
     // ŒÄ‚Ño‚µ‚½‚¢ŠÖ”‚ğ‘S‚Ä“o˜^‚µ‚Ü‚·B
     void regist_functions( );
     void receive_entry_point( std::string const& ip_address, int const& port, Json::Value const& root );
+    void update( float delta_second );
 };

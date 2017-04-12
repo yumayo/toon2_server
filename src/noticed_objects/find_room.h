@@ -8,5 +8,5 @@ class find_room : public noticed_base_object
 public:
     find_room( connection_server& server );
 public:
-    void receive_entry_point( network_handle& handle, Json::Value const & data ) override;
+    void receive_entry_point( network_handle const& handle, Json::Value const& data ) override;
 };

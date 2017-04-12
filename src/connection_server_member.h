@@ -15,6 +15,8 @@ using udp = asio::ip::udp;
 
 #include "client_manager.h"
 
+#include <thread>
+
 class connection_server::member
 {
     connection_server& _parent;
@@ -24,18 +26,27 @@ class connection_server::member
     udp::socket _udp_socket;
     udp::endpoint _remote_endpoint;
     boost::array<char, 2048> _remote_buffer;
+    int const _port_number;
+
+    // 非同期的に受信をしないとプログラムが止まってしまうので。
+    std::thread _update_io_service;
+    bool _is_update = true;
 
     // 繋がったオブジェクトたちを保存しておきます。
     client_manager _client_manager;
 public:
     member( ) = delete;
     member( connection_server& parent, int const& port_num );
-    // この関数を呼ぶと受信したデータをすべて読み込みます。
-    // またデータが来るまで待機します。
-    void run( );
+    ~member( );
+    
+    void write( network_handle const& handle, Json::Value const& send_data );
 
-    void write( network_handle  const& handle, Json::Value const& send_data );
+
+    void update( float delta_second );
 private:
     // エントリーポイント
-    void read( );
+    void _read( );
+    // データを受信したときに呼ばれます。
+    void _on_received( size_t bytes_transferred );
+    void _kill( );
 };

@@ -6,15 +6,20 @@ using namespace cinder;
 using namespace cinder::app;
 class toon2_matching_roomApp : public App
 {
-    connection_server _receiver;
+    connection_server _server;
     float _prev_elapsed_seconds = 0.0F;
     float _delta_seconds = 0.0F;
     float _gradation_seed = 0.0F;
 public:
+    toon2_matching_roomApp( );
     void setup( ) override;
     void update( ) override;
     void draw( ) override;
 };
+toon2_matching_roomApp::toon2_matching_roomApp( )
+    : _server( 25565 )
+{
+}
 void toon2_matching_roomApp::setup( )
 {
 }
@@ -23,7 +28,7 @@ void toon2_matching_roomApp::update( )
     _delta_seconds = getElapsedSeconds( ) - _prev_elapsed_seconds;
     _prev_elapsed_seconds = getElapsedSeconds( );
     _gradation_seed += _delta_seconds;
-    _receiver.update( );
+    _server.update( _delta_seconds );
 }
 void toon2_matching_roomApp::draw( )
 {

@@ -16,7 +16,7 @@ client_manager::~client_manager( )
 }
 void client_manager::receive_entry_point( std::string const & ip_address, int const & port, Json::Value const & root )
 {
-    auto handle = _network_handle_factory.make( ip_address, port );
+    auto handle = _network_handle_factory.make_with_timeout_restart( ip_address, port );
 
     auto& function_name = root["NAME"];
     if ( function_name.isString( ) )
@@ -36,6 +36,10 @@ void client_manager::receive_entry_point( std::string const & ip_address, int co
     {
         log( "NAMEが見つからない不正なデータです。" );
     }
+}
+void client_manager::update( float delta_second )
+{
+    _network_handle_factory.update( delta_second );
 }
 void client_manager::regist_functions( )
 {
