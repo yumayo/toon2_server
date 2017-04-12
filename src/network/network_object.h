@@ -2,6 +2,8 @@
 #include <string>
 #include "use_destroy_object.h"
 #include "user_pointer.hpp"
+namespace network
+{
 class network_object : public use_destroy_object
 {
     // mutableはconst関数の中で値を書き換えたい場合に付けられる修飾子です。
@@ -23,3 +25,4 @@ public:
     int const port;
 };
 using network_handle = softptr<network_object>;
+}

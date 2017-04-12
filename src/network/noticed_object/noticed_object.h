@@ -1,14 +1,17 @@
 #pragma once
 #include "jsoncpp/json.h"
 #include "../network_object.h"
-#include "../connection_server.h"
-class noticed_base_object
+#include "../udp_connection.h"
+namespace network
+{
+class noticed_object
 {
 protected:
-    connection_server& _server;
+    udp_connection& _server;
 public:
-    noticed_base_object( connection_server& server );
-    virtual ~noticed_base_object( ) {}
+    noticed_object( udp_connection& server );
+    virtual ~noticed_object( ) {}
 public:
     virtual void receive_entry_point( network_handle const& handle, Json::Value const & data ) = 0;
 };
+}

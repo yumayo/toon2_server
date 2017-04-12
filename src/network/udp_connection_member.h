@@ -1,5 +1,5 @@
 #pragma once
-#include "connection_server.h"
+#include "udp_connection.h"
 
 // boost/Asioを使うためのマクロ4つ分。
 // https://boostjp.github.io/tips/build_link.html
@@ -17,9 +17,11 @@ using udp = asio::ip::udp;
 
 #include <thread>
 
-class connection_server::member
+namespace network
 {
-    connection_server& _server;
+class udp_connection::member
+{
+    udp_connection& _server;
 
     // UDPを使う上で必須の項目達。
     asio::io_service _io_service;
@@ -37,9 +39,9 @@ class connection_server::member
     client_manager _client_manager;
 public:
     member( ) = delete;
-    member( connection_server& server, int const& port_num );
+    member( udp_connection& server, int const& port_num );
     ~member( );
-    
+
     void write( network_handle const& handle, Json::Value const& send_data );
 
     void update( float delta_second );
@@ -52,3 +54,4 @@ private:
     void _on_received( size_t bytes_transferred );
     void _kill( );
 };
+}

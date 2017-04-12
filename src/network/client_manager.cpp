@@ -1,7 +1,9 @@
 ﻿#include "client_manager.h"
 #include "string_utility.h"
-#include "noticed_objects/find_room.h"
-client_manager::client_manager( connection_server & server )
+#include "noticed_object/find_room.h"
+namespace network
+{
+client_manager::client_manager( udp_connection & server )
     : _server( server )
     , _network_handle_factory( server )
 {
@@ -49,4 +51,5 @@ void client_manager::regist_functions( )
     regist_operation( find_room );
 
     #undef regist_operation
+}
 }

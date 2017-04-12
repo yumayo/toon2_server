@@ -1,5 +1,6 @@
 ﻿#include "string_utility.h"
 #include <stdarg.h>
+std::mutex glocal_log_mutex;
 std::string format( char const * str, ... )
 {
     const int max_string_length = ( 1024 * 100 );
@@ -19,11 +20,11 @@ void log( char const * str, ... )
     va_start( args, str );
     char buf[max_string_length];
     vsnprintf( buf, max_string_length, str, args );
-    // 複数のスレッドから同時にconsoleにアクセスすると壊れてしまいます。
-    if ( cinder::app::isMainThread( ) )
-    {
-        cinder::app::console( ) << buf << std::endl;
-    }
+
+    glocal_log_mutex.lock( );
+    cinder::app::console( ) << buf << std::endl;
+    glocal_log_mutex.unlock( );
+
     va_end( args );
 }
 void log_data( char const * data, size_t size )

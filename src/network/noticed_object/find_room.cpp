@@ -1,6 +1,8 @@
 ﻿#include "find_room.h"
-find_room::find_room( connection_server & server )
-    : noticed_base_object( server )
+namespace network
+{
+find_room::find_room( udp_connection & server )
+    : noticed_object( server )
 {
 }
 void find_room::receive_entry_point( network_handle const& handle, Json::Value const & data )
@@ -17,4 +19,5 @@ void find_room::receive_entry_point( network_handle const& handle, Json::Value c
     root["DATA"]["ip_address"] = _host->ip_address;
     root["DATA"]["port"] = _host->port;
     _server.write( handle, root );
+}
 }

@@ -1,5 +1,7 @@
 ﻿#include "network_object.h"
 #include "cinder/CinderMath.h"
+namespace network
+{
 network_object::network_object( std::string ip_address, int port )
     : ip_address( ip_address )
     , port( port )
@@ -43,4 +45,5 @@ bool network_object::operator<=( network_object const & other ) const
     return
         this->ip_address <= other.ip_address &&
         this->port <= other.port;
+}
 }

@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "connection_server.h"
+#include "network/udp_connection.h"
 using namespace cinder;
 using namespace cinder::app;
 class toon2_matching_roomApp : public App
 {
-    connection_server _server;
+    network::udp_connection _server;
     float _prev_elapsed_seconds = 0.0F;
     float _delta_seconds = 0.0F;
     float _gradation_seed = 0.0F;

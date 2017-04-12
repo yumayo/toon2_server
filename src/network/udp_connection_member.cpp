@@ -1,7 +1,9 @@
-﻿#include "connection_server_member.h"
+﻿#include "udp_connection_member.h"
 #include "jsoncpp/json.h"
 #include "string_utility.h"
-connection_server::member::member( connection_server& server, int const & port_num )
+namespace network
+{
+udp_connection::member::member( udp_connection& server, int const & port_num )
     : _server( server )
     , _port_number( port_num )
     , _udp_socket( _io_service, udp::endpoint( udp::v4( ), port_num ) )
@@ -20,11 +22,11 @@ connection_server::member::member( connection_server& server, int const & port_n
         }
     } );
 }
-connection_server::member::~member( )
+udp_connection::member::~member( )
 {
     _kill( );
 }
-void connection_server::member::write( network_handle const & handle, Json::Value const & send_data )
+void udp_connection::member::write( network_handle const & handle, Json::Value const & send_data )
 {
     try
     {
@@ -44,7 +46,7 @@ void connection_server::member::write( network_handle const & handle, Json::Valu
     }
     if ( _server.on_sended )_server.on_sended( );
 }
-void connection_server::member::_kill( )
+void udp_connection::member::_kill( )
 {
     if ( !_is_update ) return;
     _is_update = false;
@@ -52,15 +54,15 @@ void connection_server::member::_kill( )
     _update_io_service.join( );
     if ( _server.on_closed )_server.on_closed( );
 }
-void connection_server::member::update( float delta_second )
+void udp_connection::member::update( float delta_second )
 {
     _client_manager.update( delta_second );
 }
-std::mutex & connection_server::member::get_mutex( )
+std::mutex & udp_connection::member::get_mutex( )
 {
     return _mutex;
 }
-void connection_server::member::_read( )
+void udp_connection::member::_read( )
 {
     _udp_socket.async_receive_from( asio::buffer( _remote_buffer ),
                                     _remote_endpoint,
@@ -84,8 +86,7 @@ void connection_server::member::_read( )
         }
     } );
 }
-
-void connection_server::member::_on_received( size_t bytes_transferred )
+void udp_connection::member::_on_received( size_t bytes_transferred )
 {
     // 受信したデータをJson形式として読み込みます。
     Json::Reader reader;
@@ -102,4 +103,5 @@ void connection_server::member::_on_received( size_t bytes_transferred )
     }
 
     if ( _server.on_readed )_server.on_readed( _remote_buffer.data( ), bytes_transferred );
+}
 }

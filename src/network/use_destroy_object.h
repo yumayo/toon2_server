@@ -1,4 +1,6 @@
 #pragma once
+namespace network
+{
 class use_destroy_object
 {
 protected:
@@ -8,3 +10,4 @@ public:
     void destroy( ) const;
     bool is_destroy( ) const;
 };
+}

@@ -1,5 +1,7 @@
 ﻿#include "network_factory.h"
 #include "scoped_mutex.h"
+namespace network
+{
 bool operator==( std::shared_ptr<network_object> const & left, std::shared_ptr<network_object> const & right )
 {
     return ( *left.get( ) ) == ( *right.get( ) );
@@ -12,7 +14,7 @@ bool operator<=( std::shared_ptr<network_object> const & left, std::shared_ptr<n
 {
     return ( *left.get( ) ) <= ( *right.get( ) );
 }
-network_factory::network_factory( connection_server & server )
+network_factory::network_factory( udp_connection & server )
     : _server( server )
 {
 }
@@ -45,4 +47,4 @@ void network_factory::update( float delta_second )
         }
     }
 }
-
+}

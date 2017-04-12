@@ -4,13 +4,16 @@
 #include <functional>
 #include "cinder/gl/scoped.h"
 #include "scoped_mutex.h"
-class connection_server
+
+namespace network
+{
+class udp_connection
 {
     class member;
     member* _m;
 public:
-    connection_server( int const& port_number );
-    ~connection_server( );
+    udp_connection( int const& port_number );
+    ~udp_connection( );
     void write( network_handle const& handle, Json::Value const& send_data );
     void update( float delta_second );
     std::mutex& get_mutex( );
@@ -25,3 +28,4 @@ public:
 
     std::function<void( )> on_closed;
 };
+}
