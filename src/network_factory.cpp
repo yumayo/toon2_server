@@ -25,7 +25,7 @@ network_handle network_factory::make_with_timeout_restart( std::string const & i
 }
 void network_factory::update( float delta_second )
 {
-    // std::remove_ifがshared_ptr<T> const& operator=に対応していないのでゴリ押しで。
+    // std::remove_ifがstd::shared_ptr<T> const& operator=に対応していないのでゴリ押しで。
     for ( auto itr = std::begin( _network_objects );
           itr != std::end( _network_objects );
           itr++ )
