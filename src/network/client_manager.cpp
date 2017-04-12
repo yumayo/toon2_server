@@ -32,12 +32,12 @@ void client_manager::receive_entry_point( std::string const & ip_address, int co
         }
         else
         {
-            log( "NAMEと一致する命令が見つかりませんでした。" );
+            log_with_time_stamp( "NAMEと一致する命令が見つかりませんでした。" );
         }
     }
     else
     {
-        log( "NAMEが見つからない不正なデータです。" );
+        log_with_time_stamp( "NAMEが見つからない不正なデータです。" );
     }
 }
 void client_manager::update( float delta_second )

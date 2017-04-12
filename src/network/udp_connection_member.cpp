@@ -41,7 +41,7 @@ void udp_connection::member::write( network_handle const & handle, Json::Value c
     }
     catch ( asio::error_code& error )
     {
-        log( "データを送れませんでした。: %s", error.message( ).c_str( ) );
+        log_with_time_stamp( "データを送れませんでした。: %s", error.message( ).c_str( ) );
         if ( _server.on_send_failed )_server.on_send_failed( );
     }
     if ( _server.on_sended )_server.on_sended( );
@@ -70,12 +70,12 @@ void udp_connection::member::_read( )
     {
         if ( e )
         {
-            log( "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
+            log_with_time_stamp( "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
             if ( _server.on_read_failed )_server.on_read_failed( );
         }
         else
         {
-            log( "データを受信しました。" );
+            log_with_time_stamp( "データを受信しました。" );
 
             _on_received( bytes_transferred );
 
@@ -99,7 +99,7 @@ void udp_connection::member::_on_received( size_t bytes_transferred )
     }
     else
     {
-        log( "データ形式を認識できませんでした。" );
+        log_with_time_stamp( "データ形式を認識できませんでした。" );
     }
 
     if ( _server.on_readed )_server.on_readed( _remote_buffer.data( ), bytes_transferred );

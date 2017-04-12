@@ -36,6 +36,7 @@ public:
     bool operator!=( hard_pointer<T> const& other ) const;
 
     operator T( ) const; // 自動的にポインタの実態を返します。
+    operator T&( ) const;
     operator T const&( ) const;
 };
 template<class T>
@@ -100,6 +101,11 @@ inline soft_pointer<T>& soft_pointer<T>::operator=( hard_pointer<T>&& other ) co
 }
 template<class T>
 inline soft_pointer<T>::operator T( ) const
+{
+    return *this->lock( );
+}
+template<class T>
+inline soft_pointer<T>::operator T&( ) const
 {
     return *this->lock( );
 }

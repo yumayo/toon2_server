@@ -1,6 +1,7 @@
 ﻿#include "string_utility.h"
 #include <stdarg.h>
-std::mutex glocal_log_mutex;
+#include "scoped_mutex.h"
+std::mutex gloval_app_console_mutex;
 std::string format( char const * str, ... )
 {
     const int max_string_length = ( 1024 * 100 );
@@ -21,9 +22,25 @@ void log( char const * str, ... )
     char buf[max_string_length];
     vsnprintf( buf, max_string_length, str, args );
 
-    glocal_log_mutex.lock( );
-    cinder::app::console( ) << buf << std::endl;
-    glocal_log_mutex.unlock( );
+    {
+        scoped_mutex console( gloval_app_console_mutex );
+        cinder::app::console( ) << buf << std::endl;
+    }
+
+    va_end( args );
+}
+void log_with_time_stamp( char const * str, ... )
+{
+    const int max_string_length = ( 1024 * 100 );
+    va_list args;
+    va_start( args, str );
+    char buf[max_string_length];
+    vsnprintf( buf, max_string_length, str, args );
+
+    {
+        scoped_mutex console( gloval_app_console_mutex );
+        cinder::app::console( ) << "[" << cinder::app::getSystemTimeNamed( ) << "]" << buf << std::endl;
+    }
 
     va_end( args );
 }
