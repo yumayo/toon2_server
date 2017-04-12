@@ -8,7 +8,7 @@ class network_object : public use_destroy_object
     // http://soundengine.jp/wordpress/tips/tutorial/329/
 
     float mutable _second = 0.0F;
-    float const _timeout_second = 60.0F;
+    float const _timeout_second = 5.0F;
 public:
     network_object( ) = delete;
     network_object( std::string ip_address, int port );

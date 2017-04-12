@@ -13,7 +13,7 @@ public:
     soft_pointer( std::weak_ptr<T> const& other ) noexcept;
     operator bool( ) const; // ポインタがnullや期限切れを判断します。
     std::shared_ptr<T> operator->( ) const; // ポインタの実態を返します。
-    std::shared_ptr<T> operator*( ) const;
+    std::shared_ptr<T> operator*( ) const; // ポインタの実態を返します。
     bool operator==( soft_pointer<T> const& other ) const; // ポインタ同士を比較します。
     bool operator!=( soft_pointer<T> const& other ) const; // ポインタ同士を比較します。
     bool operator!( ) const; // ポインタにnotを与えます。
@@ -68,8 +68,7 @@ inline bool soft_pointer<T>::operator!( ) const
 template<class T>
 inline soft_pointer<T> const & soft_pointer<T>::operator=( std::shared_ptr<T> const & other ) const
 {
-    *this = other;
-    return *this;
+    return *this = other;
 }
 template<class T>
 inline soft_pointer<T>::operator T( ) const

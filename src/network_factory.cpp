@@ -26,14 +26,16 @@ network_handle network_factory::make_with_timeout_restart( std::string const & i
 void network_factory::update( float delta_second )
 {
     // std::remove_ifがstd::shared_ptr<T> const& operator=に対応していないのでゴリ押しで。
-    for ( auto itr = std::begin( _network_objects );
-          itr != std::end( _network_objects );
+    for ( auto itr = std::begin( _network_objects ), end = std::end( _network_objects );
+          itr != end;
           itr++ )
     {
         ( *itr )->update( delta_second );
         if ( ( *itr )->is_destroy( ) )
         {
             itr = _network_objects.erase( itr );
+            if ( itr == end )
+                break;
         }
     }
 }
