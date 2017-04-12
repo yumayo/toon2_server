@@ -19,7 +19,7 @@ using udp = asio::ip::udp;
 
 class connection_server::member
 {
-    connection_server& _parent;
+    connection_server& _server;
 
     // UDPを使う上で必須の項目達。
     asio::io_service _io_service;
@@ -31,18 +31,20 @@ class connection_server::member
     // 非同期的に受信をしないとプログラムが止まってしまうので。
     std::thread _update_io_service;
     bool _is_update = true;
+    std::mutex _mutex;
 
     // 繋がったオブジェクトたちを保存しておきます。
     client_manager _client_manager;
 public:
     member( ) = delete;
-    member( connection_server& parent, int const& port_num );
+    member( connection_server& server, int const& port_num );
     ~member( );
     
     void write( network_handle const& handle, Json::Value const& send_data );
 
-
     void update( float delta_second );
+
+    std::mutex& get_mutex( );
 private:
     // エントリーポイント
     void _read( );

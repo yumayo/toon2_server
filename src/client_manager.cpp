@@ -3,6 +3,7 @@
 #include "noticed_objects/find_room.h"
 client_manager::client_manager( connection_server & server )
     : _server( server )
+    , _network_handle_factory( server )
 {
     regist_functions( );
 }

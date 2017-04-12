@@ -1,11 +1,11 @@
 ﻿#include "connection_server_member.h"
 #include "jsoncpp/json.h"
 #include "string_utility.h"
-connection_server::member::member( connection_server& parent, int const & port_num )
-    : _parent( parent )
+connection_server::member::member( connection_server& server, int const & port_num )
+    : _server( server )
     , _port_number( port_num )
     , _udp_socket( _io_service, udp::endpoint( udp::v4( ), port_num ) )
-    , _client_manager( parent )
+    , _client_manager( server )
 {
     _read( );
 
@@ -38,9 +38,9 @@ void connection_server::member::write( network_handle const & handle, Json::Valu
     catch ( asio::error_code& error )
     {
         log( "データを送れませんでした。: %s", error.message( ).c_str( ) );
-        if ( _parent.on_send_failed )_parent.on_send_failed( );
+        if ( _server.on_send_failed )_server.on_send_failed( );
     }
-    if ( _parent.on_sended )_parent.on_sended( );
+    if ( _server.on_sended )_server.on_sended( );
 }
 void connection_server::member::_kill( )
 {
@@ -48,11 +48,15 @@ void connection_server::member::_kill( )
     _is_update = false;
     _io_service.stop( );
     _update_io_service.join( );
-    if ( _parent.on_closed )_parent.on_closed( );
+    if ( _server.on_closed )_server.on_closed( );
 }
 void connection_server::member::update( float delta_second )
 {
     _client_manager.update( delta_second );
+}
+std::mutex & connection_server::member::get_mutex( )
+{
+    return _mutex;
 }
 void connection_server::member::_read( )
 {
@@ -63,7 +67,7 @@ void connection_server::member::_read( )
         if ( e )
         {
             log( "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
-            if ( _parent.on_read_failed )_parent.on_read_failed( );
+            if ( _server.on_read_failed )_server.on_read_failed( );
         }
         else
         {
@@ -95,5 +99,5 @@ void connection_server::member::_on_received( size_t bytes_transferred )
         log( "データ形式を認識できませんでした。" );
     }
 
-    if ( _parent.on_readed )_parent.on_readed( _remote_buffer.data( ), bytes_transferred );
+    if ( _server.on_readed )_server.on_readed( _remote_buffer.data( ), bytes_transferred );
 }

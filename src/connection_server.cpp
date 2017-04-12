@@ -16,3 +16,8 @@ void connection_server::update( float delta_second )
 {
     _m->update( delta_second );
 }
+
+std::mutex & connection_server::get_mutex( )
+{
+    return _m->get_mutex( );
+}

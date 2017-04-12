@@ -17,7 +17,7 @@ public:
     bool operator==( soft_pointer<T> const& other ) const; // ポインタ同士を比較します。
     bool operator!=( soft_pointer<T> const& other ) const; // ポインタ同士を比較します。
     bool operator!( ) const; // ポインタにnotを与えます。
-    soft_pointer<T> const& operator=( std::shared_ptr<T> const& other ) const;
+    soft_pointer<T>& operator=( std::shared_ptr<T> const& other ) const;
     operator T( ) const; // 自動的にポインタの実態を返します。
 };
 template<class T>
@@ -66,7 +66,7 @@ inline bool soft_pointer<T>::operator!( ) const
     return !this->lock( );
 }
 template<class T>
-inline soft_pointer<T> const & soft_pointer<T>::operator=( std::shared_ptr<T> const & other ) const
+inline soft_pointer<T>& soft_pointer<T>::operator=( std::shared_ptr<T> const & other ) const
 {
     return *this = other;
 }

@@ -1,5 +1,5 @@
 ﻿#include "network_factory.h"
-#include <algorithm>
+#include "scoped_mutex.h"
 bool operator==( std::shared_ptr<network_object> const & left, std::shared_ptr<network_object> const & right )
 {
     return ( *left.get( ) ) == ( *right.get( ) );
@@ -11,6 +11,10 @@ bool operator<( std::shared_ptr<network_object> const & left, std::shared_ptr<ne
 bool operator<=( std::shared_ptr<network_object> const & left, std::shared_ptr<network_object> const & right )
 {
     return ( *left.get( ) ) <= ( *right.get( ) );
+}
+network_factory::network_factory( connection_server & server )
+    : _server( server )
+{
 }
 network_handle network_factory::make( std::string const & ip_address, int const & port )
 {
@@ -25,6 +29,8 @@ network_handle network_factory::make_with_timeout_restart( std::string const & i
 }
 void network_factory::update( float delta_second )
 {
+    scoped_mutex mutex( _server.get_mutex( ) );
+
     // std::remove_ifがstd::shared_ptr<T> const& operator=に対応していないのでゴリ押しで。
     for ( auto itr = std::begin( _network_objects ), end = std::end( _network_objects );
           itr != end;
