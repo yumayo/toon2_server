@@ -1,11 +1,17 @@
 ﻿#include "network_object.h"
 #include "cinder/CinderMath.h"
+#include "string_utility.h"
 namespace network
 {
 network_object::network_object( std::string ip_address, int port )
     : ip_address( ip_address )
     , port( port )
 {
+}
+network_object::~network_object( )
+{
+    server_log( ip_address, port,
+                "タイムアウトになりました。このオブジェクトは削除されました。" );
 }
 void network_object::update( float delta_second ) const
 {
@@ -33,17 +39,5 @@ bool network_object::operator==( network_object const & other ) const
     return
         this->ip_address == other.ip_address &&
         this->port == other.port;
-}
-bool network_object::operator<( network_object const & other ) const
-{
-    return
-        this->ip_address < other.ip_address &&
-        this->port < other.port;
-}
-bool network_object::operator<=( network_object const & other ) const
-{
-    return
-        this->ip_address <= other.ip_address &&
-        this->port <= other.port;
 }
 }

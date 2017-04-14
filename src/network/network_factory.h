@@ -1,24 +1,20 @@
 #pragma once
-#include <set>
+#include <list>
 #include "network_object.h"
 #include "udp_connection.h"
 
 namespace network
 {
-// std::setがstd::shared_ptrの比較を行うとき、ポインタのアドレス同士で比較が行われます。
-// アドレスは違くてもその中身は一緒ということがあるので、その中身での比較を行うようにします。
-bool operator==( std::shared_ptr<network_object> const& left, std::shared_ptr<network_object> const& right );
-bool operator<( std::shared_ptr<network_object> const& left, std::shared_ptr<network_object> const& right );
-bool operator<=( std::shared_ptr<network_object> const& left, std::shared_ptr<network_object> const& right );
-
 class network_factory
 {
     udp_connection& _server;
-    std::set<std::shared_ptr<network_object>> _network_objects;
+    std::list<std::shared_ptr<network_object>> _network_objects;
 public:
     network_factory( udp_connection& server );
     network_handle make( std::string const& ip_address, int const& port );
     network_handle make_with_timeout_restart( std::string const& ip_address, int const& port );
+    std::list<std::shared_ptr<network_object>>::iterator find_network_object( network_handle handle );
+    std::list<std::shared_ptr<network_object>>::iterator find_network_object( std::shared_ptr<network_object> handle );
     void update( float delta_second );
 };
 }

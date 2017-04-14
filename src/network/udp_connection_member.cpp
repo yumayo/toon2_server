@@ -38,10 +38,13 @@ void udp_connection::member::write( network_handle const & handle, Json::Value c
         auto data = writer.write( send_data );
         _udp_socket.send_to( asio::buffer( data.c_str( ), data.size( ) ),
                              resolver.resolve( query )->endpoint( ) );
+        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                    "データを送信しました。" );
     }
     catch ( asio::error_code& error )
     {
-        log_with_time_stamp( "データを送れませんでした。: %s", error.message( ).c_str( ) );
+        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ), 
+                    "データを送れませんでした。: %s", error.message( ).c_str( ) );
         if ( _server.on_send_failed )_server.on_send_failed( );
     }
     if ( _server.on_sended )_server.on_sended( );
@@ -52,7 +55,6 @@ void udp_connection::member::_kill( )
     _is_update = false;
     _io_service.stop( );
     _update_io_service.join( );
-    if ( _server.on_closed )_server.on_closed( );
 }
 void udp_connection::member::update( float delta_second )
 {
@@ -70,12 +72,14 @@ void udp_connection::member::_read( )
     {
         if ( e )
         {
-            log_with_time_stamp( "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
+            server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                        "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
             if ( _server.on_read_failed )_server.on_read_failed( );
         }
         else
         {
-            log_with_time_stamp( "データを受信しました。" );
+            server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                        "データを受信しました。" );
 
             _on_received( bytes_transferred );
 
@@ -99,7 +103,8 @@ void udp_connection::member::_on_received( size_t bytes_transferred )
     }
     else
     {
-        log_with_time_stamp( "データ形式を認識できませんでした。" );
+        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                    "データ形式を認識できませんでした。" );
     }
 
     if ( _server.on_readed )_server.on_readed( _remote_buffer.data( ), bytes_transferred );

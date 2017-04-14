@@ -25,7 +25,5 @@ public:
 
     std::function<void( )> on_sended;
     std::function<void( )> on_send_failed;
-
-    std::function<void( )> on_closed;
 };
 }

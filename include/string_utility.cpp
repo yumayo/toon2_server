@@ -4,7 +4,7 @@
 std::mutex gloval_app_console_mutex;
 std::string format( char const * str, ... )
 {
-    const int max_string_length = ( 1024 * 100 );
+    const int max_string_length = ( 1024 );
     std::string ret;
     va_list args;
     va_start( args, str );
@@ -16,7 +16,7 @@ std::string format( char const * str, ... )
 }
 void log( char const * str, ... )
 {
-    const int max_string_length = ( 1024 * 100 );
+    const int max_string_length = ( 1024 );
     va_list args;
     va_start( args, str );
     char buf[max_string_length];
@@ -31,7 +31,7 @@ void log( char const * str, ... )
 }
 void log_with_time_stamp( char const * str, ... )
 {
-    const int max_string_length = ( 1024 * 100 );
+    const int max_string_length = ( 1024 );
     va_list args;
     va_start( args, str );
     char buf[max_string_length];
@@ -40,6 +40,22 @@ void log_with_time_stamp( char const * str, ... )
     {
         scoped_mutex console( gloval_app_console_mutex );
         cinder::app::console( ) << "[" << cinder::app::getSystemTimeNamed( ) << "]" << buf << std::endl;
+    }
+
+    va_end( args );
+}
+void server_log( std::string const & ip_address, int const & port, char const * str, ... )
+{
+    const int max_string_length = ( 1024 );
+    va_list args;
+    va_start( args, str );
+    char buf[max_string_length];
+    vsnprintf( buf, max_string_length, str, args );
+
+    {
+        scoped_mutex console( gloval_app_console_mutex );
+        cinder::app::console( ) << "[" << cinder::app::getSystemTimeNamed( ) << "] " <<
+            ip_address << " : " << port << std::endl << buf << std::endl;
     }
 
     va_end( args );
@@ -110,5 +126,5 @@ std::string getSystemTimeNamed( )
                    pnow->tm_min,
                    pnow->tm_sec );
 }
-}
-}
+            }
+        }
