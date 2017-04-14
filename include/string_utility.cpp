@@ -1,7 +1,7 @@
 ﻿#include "string_utility.h"
 #include <stdarg.h>
 #include "scoped_mutex.h"
-std::mutex gloval_app_console_mutex;
+static recursion_usable_mutex gloval_app_console_mutex;
 std::string format( char const * str, ... )
 {
     const int max_string_length = ( 1024 );

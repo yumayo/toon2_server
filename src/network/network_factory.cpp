@@ -1,5 +1,4 @@
 ﻿#include "network_factory.h"
-#include "scoped_mutex.h"
 namespace network
 {
 network_factory::network_factory( udp_connection & server )
@@ -41,6 +40,8 @@ network_handle network_factory::make_with_timeout_restart( std::string const & i
 }
 std::list<std::shared_ptr<network_object>>::iterator network_factory::find_network_object( network_handle handle )
 {
+    scoped_mutex mutex( _server.get_mutex( ) );
+
     auto itr = std::find_if( std::begin( _network_objects ), std::end( _network_objects ),
                              [ handle ] ( std::shared_ptr<network_object>& object )
     {
@@ -54,6 +55,8 @@ std::list<std::shared_ptr<network_object>>::iterator network_factory::find_netwo
 }
 std::list<std::shared_ptr<network_object>>::iterator network_factory::find_network_object( std::shared_ptr<network_object> handle )
 {
+    scoped_mutex mutex( _server.get_mutex( ) );
+
     auto itr = std::find_if( std::begin( _network_objects ), std::end( _network_objects ),
                              [ handle ] ( std::shared_ptr<network_object>& object )
     {
@@ -68,6 +71,7 @@ std::list<std::shared_ptr<network_object>>::iterator network_factory::find_netwo
 void network_factory::update( float delta_second )
 {
     scoped_mutex mutex( _server.get_mutex( ) );
+
     auto remove_itr = std::remove_if( std::begin( _network_objects ), std::end( _network_objects ),
                                       [ delta_second ] ( std::shared_ptr<network_object>& objects )
     {

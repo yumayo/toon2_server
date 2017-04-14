@@ -77,7 +77,7 @@ void udp_connection::member::update( float delta_second )
 {
     _client_manager.update( delta_second );
 }
-std::mutex & udp_connection::member::get_mutex( )
+recursion_usable_mutex & udp_connection::member::get_mutex( )
 {
     return _mutex;
 }

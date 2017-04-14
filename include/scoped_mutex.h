@@ -1,15 +1,33 @@
 #pragma once
 #include "cinder/Noncopyable.h"
-#include <mutex>
-#include "cinder/gl/scoped.h"
-// cinder/gl/scoped.h を参考にしました。
+#include "recursion_usable_mutex.h"
 
-// インスタンス化するだけでそのスコープ内のみブロッキングします。
+// std::unique_lock<std::mutex>でも代用できるかと思ったのですが、
+// lock(); lock(); ができなかったので、使用しないことにしました。
+// スコープ内で別スレッドは作成できません。
+
+// だめな例
+//scoped_mutex s( /*recursion_usable_mutex*/ mutex );
+//std::thread thread( [ ] 
+//{
+//    scoped_mutex s( /*recursion_usable_mutex*/ mutex );
+//} );
+//thread.join( );
+
+// 良い例
+//{
+//    scoped_mutex s( /*recursion_usable_mutex*/ mutex );
+//}
+//std::thread thread( [ ] 
+//{
+//    scoped_mutex s( /*recursion_usable_mutex*/ mutex );
+//} );
+//thread.join( );
+
 class scoped_mutex : cinder::Noncopyable
 {
-    std::mutex& _mutex;
+    recursion_usable_mutex& _mutex;
 public:
-    scoped_mutex( ) = delete;
-    scoped_mutex( std::mutex& server_mutex );
+    scoped_mutex( recursion_usable_mutex& mutex );
     ~scoped_mutex( );
 };

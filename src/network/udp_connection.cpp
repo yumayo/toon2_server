@@ -34,7 +34,7 @@ void udp_connection::update( float delta_second )
 {
     _m->update( delta_second );
 }
-std::mutex & udp_connection::get_mutex( )
+recursion_usable_mutex & udp_connection::get_mutex( )
 {
     return _m->get_mutex( );
 }

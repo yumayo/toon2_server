@@ -15,8 +15,6 @@ using udp = asio::ip::udp;
 
 #include "receive_data_execute.h"
 
-#include <thread>
-
 namespace network
 {
 class udp_connection::member
@@ -32,7 +30,7 @@ class udp_connection::member
     // 非同期的に受信をしないとプログラムが止まってしまうので。
     std::thread _update_io_service;
     bool _is_update = true;
-    std::mutex _mutex;
+    recursion_usable_mutex _mutex;
 
     // 繋がったオブジェクトたちを保存しておきます。
     receive_data_execute _client_manager;
@@ -51,7 +49,7 @@ public:
 
     void update( float delta_second );
 
-    std::mutex& get_mutex( );
+    recursion_usable_mutex& get_mutex( );
 private:
     // エントリーポイント
     void _read( );

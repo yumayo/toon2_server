@@ -1,10 +1,27 @@
 ﻿#include "scoped_mutex.h"
-scoped_mutex::scoped_mutex( std::mutex& server_mutex )
-    : _mutex( server_mutex )
+scoped_mutex::scoped_mutex( recursion_usable_mutex & mutex )
+    : _mutex( mutex )
 {
-    _mutex.lock( );
+    auto& itr = _mutex.emplace( );
+    if ( itr.second )
+    {
+        _mutex.lock( );
+    }
+    else
+    {
+        ++itr.first->second;
+    }
 }
 scoped_mutex::~scoped_mutex( )
 {
-    _mutex.unlock( );
+    auto& duplication_count = _mutex.get_duplication_count( );
+    if ( duplication_count == 0 )
+    {
+        _mutex.unlock( );
+        _mutex.erase( );
+    }
+    else
+    {
+        --duplication_count;
+    }
 }
