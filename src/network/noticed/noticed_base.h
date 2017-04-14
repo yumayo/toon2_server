@@ -4,14 +4,18 @@
 #include "../udp_connection.h"
 namespace network
 {
-class noticed_object
+namespace noticed
+{
+class noticed_base
 {
 protected:
     udp_connection& _server;
 public:
-    noticed_object( udp_connection& server );
-    virtual ~noticed_object( ) {}
+    noticed_base( ) = delete;
+    noticed_base( udp_connection& server );
+    virtual ~noticed_base( ) {}
 public:
     virtual void receive_entry_point( network_handle const& handle, Json::Value const & data ) = 0;
 };
+}
 }

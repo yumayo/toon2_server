@@ -2,8 +2,10 @@
 #include "string_utility.h"
 namespace network
 {
+namespace noticed
+{
 find_room::find_room( udp_connection & server )
-    : noticed_object( server )
+    : noticed_base( server )
 {
 }
 void find_room::receive_entry_point( network_handle const& handle, Json::Value const & data )
@@ -17,10 +19,11 @@ void find_room::receive_entry_point( network_handle const& handle, Json::Value c
                     "このオブジェクトがホストになりました。" );
     }
     Json::Value root;
-    root["NAME"] = "founded";
-    root["DATA"]["is_host"] = _host == handle;
-    root["DATA"]["ip_address"] = _host->ip_address;
-    root["DATA"]["port"] = _host->port;
+    root["name"] = "founded";
+    root["data"]["is_host"] = _host == handle;
+    root["data"]["ip_address"] = _host->ip_address;
+    root["data"]["port"] = _host->port;
     _server.write( handle, root );
+}
 }
 }

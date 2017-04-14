@@ -7,10 +7,13 @@ namespace network
 {
 class network_factory
 {
+protected:
     udp_connection& _server;
     std::list<std::shared_ptr<network_object>> _network_objects;
 public:
+    network_factory( ) = delete;
     network_factory( udp_connection& server );
+    virtual ~network_factory( ) { }
     network_handle make( std::string const& ip_address, int const& port );
     network_handle make_with_timeout_restart( std::string const& ip_address, int const& port );
     std::list<std::shared_ptr<network_object>>::iterator find_network_object( network_handle handle );

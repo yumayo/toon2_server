@@ -1,8 +1,10 @@
 #pragma once
-#include "noticed_object.h"
+#include "noticed_base.h"
 namespace network
 {
-class find_room : public noticed_object
+namespace noticed
+{
+class find_room : public noticed_base
 {
     // Œ±“I‚É•”‰®‚Íˆê‚Â‚Æ‚µ‚Ü‚·B
     network_handle _host;
@@ -11,4 +13,5 @@ public:
 public:
     void receive_entry_point( network_handle const& handle, Json::Value const& data ) override;
 };
+}
 }

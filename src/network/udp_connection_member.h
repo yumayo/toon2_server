@@ -13,7 +13,7 @@ using udp = asio::ip::udp;
 #include <boost/array.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "client_manager.h"
+#include "receive_data_execute.h"
 
 #include <thread>
 
@@ -28,7 +28,6 @@ class udp_connection::member
     udp::socket _udp_socket;
     udp::endpoint _remote_endpoint;
     boost::array<char, 2048> _remote_buffer;
-    int const _port_number;
 
     // 非同期的に受信をしないとプログラムが止まってしまうので。
     std::thread _update_io_service;
@@ -36,13 +35,19 @@ class udp_connection::member
     std::mutex _mutex;
 
     // 繋がったオブジェクトたちを保存しておきます。
-    client_manager _client_manager;
+    receive_data_execute _client_manager;
+private:
+    member( udp_connection& server, udp::endpoint const& end_point );
 public:
     member( ) = delete;
+    member( udp_connection& server );
     member( udp_connection& server, int const& port_num );
     ~member( );
 
     void write( network_handle const& handle, Json::Value const& send_data );
+    void write( network_handle const& handle, std::string const& send_data );
+    void write( network_handle const& handle, char const* send_data );
+    void write( network_handle const& handle, char const* send_data, size_t const& send_data_byte );
 
     void update( float delta_second );
 
