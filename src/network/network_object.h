@@ -2,6 +2,7 @@
 #include <string>
 #include "use_destroy_object.h"
 #include "user_pointer.hpp"
+#include "jsoncpp/json.h"
 namespace network
 {
 class network_object : public use_destroy_object
@@ -13,7 +14,7 @@ class network_object : public use_destroy_object
     float const _timeout_second = 60.0F;
 public:
     network_object( ) = delete;
-    network_object( std::string ip_address, int port );
+    network_object( std::string const& ip_address, int const& port, Json::Value const& user_data );
     ~network_object( );
     void update( float delta_second ) const;
     void timeout_restart( ) const;
@@ -22,6 +23,7 @@ public:
 public:
     std::string const ip_address;
     int const port;
+    Json::Value user_data;
 };
-using network_handle = softptr<network_object>;
+using network_handle = utility::softptr<network_object>;
 }

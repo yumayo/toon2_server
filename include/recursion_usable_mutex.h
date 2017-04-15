@@ -5,6 +5,8 @@
 
 // 再帰的な呼び出し時にlockを掛けないmutexを管理できます。
 // 主に、scoped_mutexと一緒に使います。
+namespace utility
+{
 class recursion_usable_mutex
 {
     std::mutex _mutex;
@@ -17,3 +19,4 @@ public:
     void erase( );
     int& get_duplication_count( );
 };
+}

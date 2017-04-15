@@ -1,6 +1,7 @@
 #pragma once
-
 #include <memory>
+namespace utility
+{
 template<class T>
 using hard_pointer = std::shared_ptr<T>;
 template<class T>
@@ -116,3 +117,4 @@ inline soft_pointer<T>::operator T const&( ) const
 }
 template<class T>
 using softptr = soft_pointer<T>;
+}

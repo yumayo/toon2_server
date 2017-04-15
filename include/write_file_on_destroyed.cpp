@@ -1,18 +1,18 @@
-﻿#include "write_on_destroyed.h"
+﻿#include "write_file_on_destroyed.h"
 #include "string_utility.h"
 #include <stdarg.h>
 #include <fstream>
-write_on_destroyed::write_on_destroyed( std::string const & filename )
+write_file_on_destroyed::write_file_on_destroyed( std::string const & filename )
     : _filename( filename )
 {
 }
-write_on_destroyed::~write_on_destroyed( )
+write_file_on_destroyed::~write_file_on_destroyed( )
 {
     auto writable_path = cinder::app::getWritablePath( );
     std::ofstream output( writable_path + _filename );
     output << *this;
 }
-void write_on_destroyed::operator()( char const * str, ... )
+void write_file_on_destroyed::operator()( char const * str, ... )
 {
     const int max_string_length = ( 1024 * 100 );
     std::string formated_string;

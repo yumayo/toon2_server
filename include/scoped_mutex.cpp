@@ -1,4 +1,6 @@
 ﻿#include "scoped_mutex.h"
+namespace utility
+{
 scoped_mutex::scoped_mutex( recursion_usable_mutex & mutex )
     : _mutex( mutex )
 {
@@ -24,4 +26,5 @@ scoped_mutex::~scoped_mutex( )
     {
         --duplication_count;
     }
+}
 }

@@ -19,7 +19,7 @@ public:
     void write( network_handle const& handle, char const* send_data );
     void write( network_handle const& handle, char const* send_data, size_t send_data_byte );
     void update( float delta_second );
-    recursion_usable_mutex& get_mutex( );
+    utility::recursion_usable_mutex& get_mutex( );
 public:
     // 別スレッドでの呼び出しなのでmutexを付けて変数を操作してください。
     // サポートしているフォーマットは json です。

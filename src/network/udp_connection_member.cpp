@@ -55,13 +55,13 @@ void udp_connection::member::write( network_handle const & handle, char const * 
                                     boost::lexical_cast<std::string>( handle->port ) );
         _udp_socket.send_to( asio::buffer( send_data, send_data_byte ),
                              resolver.resolve( query )->endpoint( ) );
-        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
-                    "データを送信しました。" );
+        utility::log_network( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                              "データを送信しました。" );
     }
     catch ( asio::error_code& error )
     {
-        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
-                    "データを送れませんでした。: %s", error.message( ).c_str( ) );
+        utility::log_network( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                              "データを送れませんでした。: %s", error.message( ).c_str( ) );
         if ( _server.on_send_failed )_server.on_send_failed( );
     }
     if ( _server.on_sended )_server.on_sended( );
@@ -77,7 +77,7 @@ void udp_connection::member::update( float delta_second )
 {
     _client_manager.update( delta_second );
 }
-recursion_usable_mutex & udp_connection::member::get_mutex( )
+utility::recursion_usable_mutex & udp_connection::member::get_mutex( )
 {
     return _mutex;
 }
@@ -89,14 +89,14 @@ void udp_connection::member::_read( )
     {
         if ( e )
         {
-            server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
-                        "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
+            utility::log_network( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                                  "データを受け取れませんでした。: %s", e.message( ).c_str( ) );
             if ( _server.on_read_failed )_server.on_read_failed( );
         }
         else
         {
-            server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
-                        "データを受信しました。" );
+            utility::log_network( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                                  "データを受信しました。" );
 
             _on_received( bytes_transferred );
 
@@ -120,8 +120,8 @@ void udp_connection::member::_on_received( size_t bytes_transferred )
     }
     else
     {
-        server_log( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
-                    "データ形式を認識できませんでした。" );
+        utility::log_network( _remote_endpoint.address( ).to_string( ), _remote_endpoint.port( ),
+                              "データ形式を認識できませんでした。" );
         if ( _server.on_received_not_support_format )_server.on_received_not_support_format( _remote_buffer.data( ), bytes_transferred );
     }
 }

@@ -24,6 +24,8 @@
 //} );
 //thread.join( );
 
+namespace utility
+{
 class scoped_mutex : cinder::Noncopyable
 {
     recursion_usable_mutex& _mutex;
@@ -31,3 +33,4 @@ public:
     scoped_mutex( recursion_usable_mutex& mutex );
     ~scoped_mutex( );
 };
+}

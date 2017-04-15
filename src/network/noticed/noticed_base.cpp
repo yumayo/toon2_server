@@ -3,8 +3,9 @@ namespace network
 {
 namespace noticed
 {
-noticed_base::noticed_base( udp_connection & server )
-    : _server( server )
+noticed_base::noticed_base( udp_connection& connection, receive_data_execute& clients )
+    : _connection( connection )
+    , _clients( clients )
 {
 }
 }
