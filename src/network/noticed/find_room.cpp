@@ -41,8 +41,8 @@ void find_room::receive_entry_point( network_handle const& handle )
         {
             Json::Value root;
             root["name"] = "new_client";
-            root["data"]["is_host"] = handle == _host;
             root["data"]["ip_address"] = handle->ip_address;
+            root["data"]["port"] = handle->port;
             _connection.write( child, root );
         }
     }
