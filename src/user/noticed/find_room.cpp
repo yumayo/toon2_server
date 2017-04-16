@@ -1,14 +1,14 @@
 ﻿#include "find_room.h"
 #include "string_utility.h"
-namespace network
+namespace user
 {
 namespace noticed
 {
-find_room::find_room( udp_connection& connection, receive_data_execute& clients )
-    : noticed_base( connection, clients )
+find_room::find_room( network::udp_connection& connection )
+    : noticed_base( connection )
 {
 }
-void find_room::receive_entry_point( network_handle const& handle )
+void find_room::receive_entry_point( network::network_handle handle, Json::Value root )
 {
     utility::scoped_mutex mutex( _connection.get_mutex( ) );
 
@@ -19,7 +19,7 @@ void find_room::receive_entry_point( network_handle const& handle )
                               "このオブジェクトがホストになりました。" );
     }
 
-    for ( auto& child : _clients.get_children( ) )
+    for ( auto& child : _connection.get_clients( ) )
     {
         if ( handle == child )
         {
@@ -29,7 +29,7 @@ void find_room::receive_entry_point( network_handle const& handle )
             root["data"]["ip_address"] = handle->ip_address;
             root["data"]["port"] = handle->port;
             int index = 0;
-            for ( auto& c : _clients.get_children( ) )
+            for ( auto& c : _connection.get_clients( ) )
             {
                 if ( handle == c ) continue;
                 root["data"]["clients"][index]["ip_address"] = c->ip_address;

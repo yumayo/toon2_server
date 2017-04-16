@@ -1,18 +1,18 @@
 #pragma once
 #include "noticed_base.h"
 #include "cinder/Color.h"
-namespace network
+namespace user
 {
 namespace noticed
 {
 class find_room : public noticed_base
 {
     // Œ±“I‚É•”‰®‚Íˆê‚Â‚Æ‚µ‚Ü‚·B
-    network_handle _host;
+    network::network_handle _host;
 public:
-    find_room( udp_connection& connection, receive_data_execute& clients );
+    find_room( network::udp_connection& connection );
 public:
-    void receive_entry_point( network_handle const& handle ) override;
+    void receive_entry_point( network::network_handle handle, Json::Value root ) override;
 };
 }
 }
