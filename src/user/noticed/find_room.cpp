@@ -10,8 +10,6 @@ find_room::find_room( network::udp_connection& connection )
 }
 void find_room::receive_entry_point( network::network_handle handle, Json::Value root )
 {
-    utility::scoped_mutex mutex( _connection.get_mutex( ) );
-
     if ( !_host )
     {
         _host = handle;
