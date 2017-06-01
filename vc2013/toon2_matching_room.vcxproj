@@ -106,11 +106,6 @@
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Cinder\proj\vc2013\cinder.vcxproj">
-      <Project>{92b5be70-dcaa-40e4-92d8-cc2b95aa28be}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <ClCompile Include="..\cinder_cocoslike\action\action.cpp" />
@@ -167,7 +162,9 @@
     <ClCompile Include="..\cinder_cocoslike\utility\write_file_on_destroyed.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\user\default_scene.cpp" />
+    <ClCompile Include="..\src\user\noticed\close.cpp" />
     <ClCompile Include="..\src\user\noticed\find_room.cpp" />
+    <ClCompile Include="..\src\user\noticed\host_connection.cpp" />
     <ClCompile Include="..\src\user\noticed\noticed_base.cpp" />
     <ClCompile Include="..\src\user\noticed\receive_data_resend.cpp" />
     <ClCompile Include="..\src\user\receive_data_execute.cpp" />
@@ -241,7 +238,9 @@
     <ClInclude Include="..\src\main.h" />
     <ClInclude Include="..\src\user\default_scene.h" />
     <ClInclude Include="..\src\user\noticed.hpp" />
+    <ClInclude Include="..\src\user\noticed\close.h" />
     <ClInclude Include="..\src\user\noticed\find_room.h" />
+    <ClInclude Include="..\src\user\noticed\host_connection.h" />
     <ClInclude Include="..\src\user\noticed\noticed_base.h" />
     <ClInclude Include="..\src\user\noticed\receive_data_resend.h" />
     <ClInclude Include="..\src\user\receive_data_execute.h" />

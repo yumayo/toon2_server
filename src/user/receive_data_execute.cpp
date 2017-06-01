@@ -1,6 +1,5 @@
 ﻿#include "receive_data_execute.h"
 #include "string_utility.h"
-#include "noticed/noticed_base.h"
 #include "noticed.hpp"
 namespace user
 {
@@ -12,6 +11,8 @@ receive_data_execute::receive_data_execute( network::udp_connection & connection
 
     regist_operation( find_room );
     regist_operation( receive_data_resend );
+    regist_operation( host_connection );
+    regist_operation( close );
 
     #undef regist_operation
 }
