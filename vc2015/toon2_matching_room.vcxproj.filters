@@ -197,12 +197,6 @@
     <ClInclude Include="..\cinder_cocoslike\library\font\stb_truetype.h">
       <Filter>cinder_cocoslike\library\font</Filter>
     </ClInclude>
-    <ClInclude Include="..\cinder_cocoslike\audio\buffer_player.h">
-      <Filter>cinder_cocoslike\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cinder_cocoslike\audio\file_player.h">
-      <Filter>cinder_cocoslike\audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\cinder_cocoslike\action.hpp">
       <Filter>cinder_cocoslike</Filter>
     </ClInclude>
@@ -242,14 +236,26 @@
     <ClInclude Include="..\src\main.h">
       <Filter>User Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\user\connection_handle.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\user\default_scene.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed.hpp">
       <Filter>User Files\user</Filter>
     </ClInclude>
     <ClInclude Include="..\src\user\receive_data_execute.h">
       <Filter>User Files\user</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\user\noticed.hpp">
-      <Filter>User Files\user</Filter>
+    <ClInclude Include="..\src\user\noticed\check_handle.h">
+      <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\close.h">
+      <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\feed_captured.h">
+      <Filter>User Files\user\noticed</Filter>
     </ClInclude>
     <ClInclude Include="..\src\user\noticed\find_room.h">
       <Filter>User Files\user\noticed</Filter>
@@ -257,14 +263,14 @@
     <ClInclude Include="..\src\user\noticed\noticed_base.h">
       <Filter>User Files\user\noticed</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\user\noticed\receive_data_resend.h">
-      <Filter>User Files\user\noticed</Filter>
+    <ClInclude Include="..\cinder_cocoslike\audio\base_player.h">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\user\noticed\host_connection.h">
-      <Filter>User Files\user\noticed</Filter>
+    <ClInclude Include="..\cinder_cocoslike\audio\buffer_player.h">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\user\noticed\close.h">
-      <Filter>User Files\user\noticed</Filter>
+    <ClInclude Include="..\cinder_cocoslike\audio\file_player.h">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,12 +419,6 @@
     <ClCompile Include="..\cinder_cocoslike\network\use_destroy_object.cpp">
       <Filter>cinder_cocoslike\network</Filter>
     </ClCompile>
-    <ClCompile Include="..\cinder_cocoslike\audio\buffer_player.cpp">
-      <Filter>cinder_cocoslike\audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\cinder_cocoslike\audio\file_player.cpp">
-      <Filter>cinder_cocoslike\audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\cinder_cocoslike\app_delegate.cpp">
       <Filter>cinder_cocoslike</Filter>
     </ClCompile>
@@ -443,20 +443,29 @@
     <ClCompile Include="..\src\user\receive_data_execute.cpp">
       <Filter>User Files\user</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\user\noticed\check_handle.cpp">
+      <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\close.cpp">
+      <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\feed_captured.cpp">
+      <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\user\noticed\find_room.cpp">
       <Filter>User Files\user\noticed</Filter>
     </ClCompile>
     <ClCompile Include="..\src\user\noticed\noticed_base.cpp">
       <Filter>User Files\user\noticed</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\user\noticed\receive_data_resend.cpp">
-      <Filter>User Files\user\noticed</Filter>
+    <ClCompile Include="..\cinder_cocoslike\audio\buffer_player.cpp">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\user\noticed\host_connection.cpp">
-      <Filter>User Files\user\noticed</Filter>
+    <ClCompile Include="..\cinder_cocoslike\audio\file_player.cpp">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\user\noticed\close.cpp">
-      <Filter>User Files\user\noticed</Filter>
+    <ClCompile Include="..\cinder_cocoslike\audio\base_player.cpp">
+      <Filter>cinder_cocoslike\audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

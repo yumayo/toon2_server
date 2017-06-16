@@ -3,8 +3,8 @@ namespace user
 {
 namespace noticed
 {
-noticed_base::noticed_base( network::udp_connection& connection )
-    : _connection( connection )
+noticed_base::noticed_base( receive_data_execute& execute )
+    : _execute( execute )
 {
 }
 }

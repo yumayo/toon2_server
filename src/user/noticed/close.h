@@ -5,13 +5,13 @@ namespace user
 {
 namespace noticed
 {
-// このクラスをクライアントが呼び続けることでホストとして維持できるようになります。
 class close : public noticed_base
 {
 public:
-    close( network::udp_connection& connection );
+    close( receive_data_execute& execute );
 public:
-    void receive_entry_point( network::network_handle handle, Json::Value root ) override;
+    void udp_receive_entry_point( network::network_handle handle, Json::Value const& root ) override;
+    void tcp_receive_entry_point( network::client_handle handle, Json::Value const& root ) override;
 };
 }
 }
