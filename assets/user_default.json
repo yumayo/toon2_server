@@ -1,3 +1,4 @@
 {
-   "ground_size" : 2048
+   "ground_scale" : 32,
+   "ground_size" : 32
 }

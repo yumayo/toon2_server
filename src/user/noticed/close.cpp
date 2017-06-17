@@ -2,6 +2,7 @@
 #include "find_room.h"
 #include "check_handle.h"
 #include "boost/lexical_cast.hpp"
+#include "ground.h"
 namespace user
 {
 namespace noticed
@@ -32,6 +33,20 @@ void close::tcp_receive_entry_point( network::client_handle handle, Json::Value 
     r["data"]["ip_address"] = handle.ip_address;
     r["data"]["udp_port"] = udp_port;
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
+
+    auto ground_color = std::dynamic_pointer_cast<ground>( _execute.find( "ground" ) );
+    auto& color_map = ground_color->get_ground_color( );
+    for ( int y = 0; y < color_map.size( ); ++y )
+    {
+        for ( int x = 0; x < color_map[y].size( ); ++x )
+        {
+            auto& pixel = color_map[x][y];
+            if ( pixel == target_id )
+            {
+                pixel = 0;
+            }
+        }
+    }
 }
 }
 }

@@ -15,6 +15,7 @@ receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
     regist_operation( close );
     regist_operation( feed_captured );
     regist_operation( check_handle );
+    regist_operation( ground );
 
     #undef regist_operation
 }

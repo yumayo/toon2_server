@@ -14,25 +14,14 @@ void check_handle::udp_receive_entry_point( network::network_handle handle, Json
 }
 void check_handle::tcp_receive_entry_point( network::client_handle handle, Json::Value const& root )
 {
-    int id = INVALID_ID;
-    if ( root["id"].isInt( ) )
-    {
-        id = ++_id;
-        _connection_handles[id].ip_address = handle.ip_address;
-        _connection_handles[id].tcp_port = boost::lexical_cast<int>( handle.port );
-        _connection_handles[id].udp_port = root["data"]["udp_port"].asInt( );
-    }
-    else
-    {
-        id = root["id"].asInt( );
-        _connection_handles[id].ip_address = handle.ip_address;
-        _connection_handles[id].tcp_port = boost::lexical_cast<int>( handle.port );
-        _connection_handles[id].udp_port = root["data"]["udp_port"].asInt( );
-    }
+    ++_id;
+    _connection_handles[_id].ip_address = handle.ip_address;
+    _connection_handles[_id].tcp_port = boost::lexical_cast<int>( handle.port );
+    _connection_handles[_id].udp_port = root["data"]["udp_port"].asInt( );
 
     Json::Value r;
     r["name"] = "id_received";
-    r["data"]["id"] = id;
+    r["data"]["id"] = _id;
     _execute.tcp( ).write( handle, Json::FastWriter( ).write( r ) );
 }
 std::map<int, connection_handle> const & check_handle::get_connection_handles( ) const

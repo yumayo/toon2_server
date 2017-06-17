@@ -167,6 +167,7 @@
     <ClCompile Include="..\src\user\noticed\close.cpp" />
     <ClCompile Include="..\src\user\noticed\feed_captured.cpp" />
     <ClCompile Include="..\src\user\noticed\find_room.cpp" />
+    <ClCompile Include="..\src\user\noticed\ground.cpp" />
     <ClCompile Include="..\src\user\noticed\noticed_base.cpp" />
     <ClCompile Include="..\src\user\receive_data_execute.cpp" />
   </ItemGroup>
@@ -245,6 +246,7 @@
     <ClInclude Include="..\src\user\noticed\close.h" />
     <ClInclude Include="..\src\user\noticed\feed_captured.h" />
     <ClInclude Include="..\src\user\noticed\find_room.h" />
+    <ClInclude Include="..\src\user\noticed\ground.h" />
     <ClInclude Include="..\src\user\noticed\noticed_base.h" />
     <ClInclude Include="..\src\user\receive_data_execute.h" />
   </ItemGroup>

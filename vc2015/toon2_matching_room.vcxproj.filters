@@ -272,6 +272,9 @@
     <ClInclude Include="..\cinder_cocoslike\audio\file_player.h">
       <Filter>cinder_cocoslike\audio</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\user\noticed\ground.h">
+      <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -466,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="..\cinder_cocoslike\audio\base_player.cpp">
       <Filter>cinder_cocoslike\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\ground.cpp">
+      <Filter>User Files\user\noticed</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
