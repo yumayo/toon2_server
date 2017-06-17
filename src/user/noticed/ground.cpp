@@ -26,15 +26,15 @@ void ground::udp_receive_entry_point( network::network_handle handle, Json::Valu
 
     auto radius = root["data"]["radius"].asFloat( ) / ground_scale;
 
+    auto pixel = ivec2( root["data"]["position"][0].asFloat( ) / ground_scale,
+                        root["data"]["position"][1].asFloat( ) / ground_scale );
     for ( int y = -radius; y <= radius; ++y )
     {
         for ( int x = -radius; x <= radius; ++x )
         {
             if ( radius < length( vec2( x, y ) ) ) continue;
 
-            auto pixel = ivec2( x, y ) + ivec2( root["data"]["position"][0].asFloat( ) / ground_scale,
-                                                root["data"]["position"][1].asFloat( ) / ground_scale );
-            pixel = glm::clamp( pixel, ivec2( 0 ), ivec2( ground_size - 1 ) );
+            auto pos = glm::clamp( pixel + ivec2( x, y ), ivec2( 0 ), ivec2( ground_size - 1 ) );
             _ground_color[pixel.x][pixel.y] = id;
         }
     }
