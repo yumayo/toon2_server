@@ -9,5 +9,6 @@ class default_scene : public scene
 public:
     CREATE_H( default_scene );
     bool init( );
+    void update( float delta ) final override;
 };
 }

@@ -16,6 +16,7 @@ receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
     regist_operation( feed_captured );
     regist_operation( check_handle );
     regist_operation( ground );
+    regist_operation( player_on_captured );
 
     #undef regist_operation
 }
@@ -51,6 +52,8 @@ void receive_data_execute::tcp_receive_entry_point( network::client_handle handl
         auto itr = _noticed_objects.find( name );
         if ( itr != _noticed_objects.end( ) )
         {
+            utility::log_network( handle.ip_address, boost::lexical_cast<int>( handle.port ),
+                                  "[%s]命令実行", function_name.asString( ).c_str( ) );
             itr->second->tcp_receive_entry_point( handle, root );
         }
         else

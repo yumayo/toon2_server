@@ -18,6 +18,7 @@ public:
     void tcp_receive_entry_point( network::client_handle handle, Json::Value const& root ) override;
 public:
     std::map<int, connection_handle> const& get_connection_handles( ) const;
+    connection_handle find_client( int const& id );
     int find_id( std::string const& address, int const& port );
     int find_tcp_port( std::string const& address, int const& udp_port );
     int find_udp_port( std::string const& address, int const& tcp_port );

@@ -6,3 +6,4 @@
 #include "noticed/feed_captured.h"
 #include "noticed/check_handle.h"
 #include "noticed/ground.h"
+#include "noticed/player_on_captured.h"

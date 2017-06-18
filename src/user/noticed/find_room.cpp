@@ -1,7 +1,6 @@
 ﻿#include "find_room.h"
 #include "feed_captured.h"
 #include "check_handle.h"
-#include "cinder/Rand.h"
 #include "user_default.h"
 #include "utility.hpp"
 #include "ground.h"
@@ -11,6 +10,7 @@ namespace noticed
 {
 find_room::find_room( receive_data_execute& execute )
     : noticed_base( execute )
+    , _random_device( 2017 )
 {
 }
 void find_room::udp_receive_entry_point( network::network_handle handle, Json::Value const& root )
@@ -33,10 +33,9 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
         _client_data[id]["udp_port"] = itr->second.udp_port;
         _client_data[id]["tcp_port"] = itr->second.tcp_port;
 
-        cinder::Rand rand( cinder::app::getElapsedSeconds( ) );
-        auto color = cinder::hsvToRgb( cinder::vec3( rand.nextFloat( ),
-                                                     rand.nextFloat( 0.6F, 0.8F ),
-                                                     rand.nextFloat( 0.7F, 0.8F ) ) );
+        auto color = cinder::hsvToRgb( cinder::vec3( _random_device.nextFloat( ),
+                                                     _random_device.nextFloat( 0.6F, 0.8F ),
+                                                     _random_device.nextFloat( 0.7F, 0.8F ) ) );
         _client_data[id]["color"][0] = color.r;
         _client_data[id]["color"][1] = color.g;
         _client_data[id]["color"][2] = color.b;
@@ -65,9 +64,8 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             root["data"] = _client_data[id];
 
             // 適当な位置にスポーンさせます。
-            cinder::Rand rand( cinder::app::getElapsedSeconds( ) );
-            root["data"]["position"][0] = rand.nextInt( 0, ground_size * ground_scale );
-            root["data"]["position"][1] = rand.nextInt( 0, ground_size * ground_scale );
+            root["data"]["position"][0] = _random_device.nextInt( 0, ground_size * ground_scale );
+            root["data"]["position"][1] = _random_device.nextInt( 0, ground_size * ground_scale );
 
             root["data"]["ground_size"] = ground_size;
             root["data"]["ground_scale"] = ground_scale;

@@ -24,6 +24,7 @@ void check_handle::tcp_receive_entry_point( network::client_handle handle, Json:
     {
         if ( !id.second )
         {
+            id.second = true;
             no_use_id = id.first;
             break;
         }
@@ -45,12 +46,21 @@ std::map<int, connection_handle> const & check_handle::get_connection_handles( )
 {
     return _connection_handles;
 }
+connection_handle check_handle::find_client( int const & id )
+{
+    auto handle = _connection_handles.find( id );
+    if ( handle != _connection_handles.end( ) )
+    {
+        return handle->second;
+    }
+    return connection_handle( );
+}
 int check_handle::find_id( std::string const & address, int const & port )
 {
     for ( auto& h : _connection_handles )
     {
-        if ( h.second.ip_address == address && 
-             ( h.second.tcp_port == port || h.second.udp_port == port ) )
+        if ( h.second.ip_address == address &&
+            ( h.second.tcp_port == port || h.second.udp_port == port ) )
         {
             return h.first;
         }
@@ -82,7 +92,7 @@ int check_handle::find_udp_port( std::string const & address, int const & tcp_po
 void check_handle::destroy_connection_handle( int id )
 {
     _connection_handles.erase( id );
-    _id.erase( id );
+    _id[id] = false;
 }
 }
 }
