@@ -10,7 +10,7 @@ CREATE_CPP( default_scene )
 }
 bool default_scene::init( )
 {
-    auto tcp = network::tcp_server::create( "25564", 16 );
+    auto tcp = network::tcp_server::create( "25564", 255 );
     add_child( tcp );
     auto udp = network::udp_connection::create( 25565 );
     add_child( udp );

@@ -1,4 +1,4 @@
 {
-   "ground_scale" : 32,
-   "ground_size" : 32
+   "ground_scale" : 16,
+   "ground_size" : 128
 }

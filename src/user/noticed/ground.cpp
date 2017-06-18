@@ -35,7 +35,7 @@ void ground::udp_receive_entry_point( network::network_handle handle, Json::Valu
             if ( radius < length( vec2( x, y ) ) ) continue;
 
             auto pos = glm::clamp( pixel + ivec2( x, y ), ivec2( 0 ), ivec2( ground_size - 1 ) );
-            _ground_color[pixel.x][pixel.y] = id;
+            _ground_color[pos.x][pos.y] = id;
         }
     }
 }
