@@ -52,6 +52,9 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
     auto ground_color = std::dynamic_pointer_cast<ground>( _execute.find( "ground" ) );
     auto feed_mgr = std::dynamic_pointer_cast<feed_captured>( _execute.find( "feed_captured" ) );
 
+    // 適当な位置にスポーンさせます。
+    auto spawn_position = cinder::ivec2( _random_device.nextInt( 0, ground_size * ground_scale ), _random_device.nextInt( 0, ground_size * ground_scale ) );
+    
     // 全クライアントに通知。
     for ( auto& child : _execute.tcp( ).get_clients( ) )
     {
@@ -63,9 +66,8 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             root["name"] = "founded";
             root["data"] = _client_data[id];
 
-            // 適当な位置にスポーンさせます。
-            root["data"]["position"][0] = _random_device.nextInt( 0, ground_size * ground_scale );
-            root["data"]["position"][1] = _random_device.nextInt( 0, ground_size * ground_scale );
+            root["data"]["position"][0] = spawn_position.x;
+            root["data"]["position"][1] = spawn_position.y;
 
             root["data"]["ground_size"] = ground_size;
             root["data"]["ground_scale"] = ground_scale;
@@ -149,6 +151,8 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             Json::Value root;
             root["name"] = "new_client";
             root["data"] = _client_data[id];
+            root["data"]["position"][0] = spawn_position.x;
+            root["data"]["position"][1] = spawn_position.y;
             _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
         }
     }
