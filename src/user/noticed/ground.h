@@ -14,6 +14,7 @@ public:
     void tcp_receive_entry_point( network::client_handle handle, Json::Value const& root ) override;
 public:
     std::vector<std::vector<unsigned char>>& get_ground_color_id( );
+    void clear_color_id( int const& id );
 };
 }
 }

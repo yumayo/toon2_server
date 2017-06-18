@@ -43,8 +43,4 @@ bool default_scene::init( )
 
     return true;
 }
-void default_scene::update( float delta )
-{
-
-}
 }
