@@ -35,8 +35,8 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
 
         cinder::Rand rand( cinder::app::getElapsedSeconds( ) );
         auto color = cinder::hsvToRgb( cinder::vec3( rand.nextFloat( ),
-                                                     rand.nextFloat( 0.3F, 0.7F ),
-                                                     rand.nextFloat( 0.3F, 0.7F ) ) );
+                                                     rand.nextFloat( 0.6F, 0.8F ),
+                                                     rand.nextFloat( 0.7F, 0.8F ) ) );
         _client_data[id]["color"][0] = color.r;
         _client_data[id]["color"][1] = color.g;
         _client_data[id]["color"][2] = color.b;
@@ -72,17 +72,6 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             root["data"]["ground_size"] = ground_size;
             root["data"]["ground_scale"] = ground_scale;
 
-            // エサの情報を全て詰めます。
-            {
-                int index = 0;
-                for ( auto& feed : feed_mgr->get_feed_objects( ) )
-                {
-                    root["data"]["feeds"][index]["tag"] = feed.first;
-                    root["data"]["feeds"][index]["position"][0] = feed.second.x;
-                    root["data"]["feeds"][index]["position"][1] = feed.second.y;
-                    index++;
-                }
-            }
             // サーバーに接続中のオブジェクト全てのデータを詰めます。
             {
                 int index = 0;
@@ -93,18 +82,68 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                     index++;
                 }
             }
-            // グラウンドの状況を詰めます。
+
+            auto& feed_objects = feed_mgr->get_feed_objects( );
+            auto const FEED_NUMBER = feed_objects.size( );
+            root["data"]["feed_number"] = FEED_NUMBER;
+
+            auto& color_map = ground_color->get_ground_color_id( );
+            auto GROUND_SIZE = color_map.size( ); // マップは正方形です。
+            root["data"]["ground_size"] = GROUND_SIZE;
+
+            // ひとまず先にデータを送ります。
+            _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
+
+            // エサの情報とグラウンドの情報を全て詰めます。
+            struct header
             {
-                auto& color_map = ground_color->get_ground_color( );
-                for ( int y = 0; y < color_map.size( ); ++y )
+                char name[16];
+                int byte;
+            };
+            struct feed_data
+            {
+                int tag;
+                int x;
+                int y;
+            };
+            std::unique_ptr<unsigned char [ ]> feed_data_and_ground_data( new unsigned char[
+                sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER +
+                    sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE] );
+
+            int index = 0;
+            {
+                header* feed_header = new( feed_data_and_ground_data.get( ) + index ) header;
+                std::memcpy( feed_header->name, "feed_data", sizeof( "feed_data" ) );
+                feed_header->byte = sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER;
+                index += sizeof( header );
+
+                for ( auto& feed : feed_objects )
                 {
-                    for ( int x = 0; x < color_map[y].size( ); ++x )
-                    {
-                        root["data"]["ground_pixel"][x][y] = color_map[x][y];
-                    }
+                    feed_data* f = new( feed_data_and_ground_data.get( ) + index ) feed_data;
+                    f->tag = feed.first;
+                    f->x = feed.second.x;
+                    f->y = feed.second.y;
+                    index += sizeof( feed_data );
                 }
             }
-            _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
+
+            // グラウンドの状況を詰めます。
+            {
+                header* feed_header = new( feed_data_and_ground_data.get( ) + index ) header;
+                std::memcpy( feed_header->name, "ground_data", sizeof( "ground_data" ) );
+                feed_header->byte = sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE;
+                index += sizeof( header );
+
+                for ( int y = 0; y < color_map.size( ); ++y )
+                {
+                    for ( int x = 0; x < color_map.size( ); ++x )
+                    {
+                        feed_data_and_ground_data[index] = color_map[x][y];
+                        index += sizeof( unsigned char );
+                    }
+                }
+                _execute.tcp( ).write( child, (char*)feed_data_and_ground_data.get( ), index );
+            }
         }
         // それ以外の人には新しくクライアントが来たという情報を提供します。
         else

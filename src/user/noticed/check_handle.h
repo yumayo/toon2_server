@@ -8,7 +8,7 @@ namespace noticed
 // このクラスにユーザーのIDを保存しておきます。
 class check_handle : public noticed_base
 {
-    int _id = 0;
+    std::map<int, bool> _id;
     std::map<int, connection_handle> _connection_handles;
 public:
     check_handle( receive_data_execute& execute );

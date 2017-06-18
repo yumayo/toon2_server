@@ -4,24 +4,41 @@ namespace user
 {
 namespace noticed
 {
-int check_handle::INVALID_ID = -1;
+int check_handle::INVALID_ID = 0;
 check_handle::check_handle( receive_data_execute& execute )
     : noticed_base( execute )
 {
+    _id[INVALID_ID] = true;
+    for ( int i = 1; i < 255; ++i )
+    {
+        _id[i] = false;
+    }
 }
 void check_handle::udp_receive_entry_point( network::network_handle handle, Json::Value const& root )
 {
 }
 void check_handle::tcp_receive_entry_point( network::client_handle handle, Json::Value const& root )
 {
-    ++_id;
-    _connection_handles[_id].ip_address = handle.ip_address;
-    _connection_handles[_id].tcp_port = boost::lexical_cast<int>( handle.port );
-    _connection_handles[_id].udp_port = root["data"]["udp_port"].asInt( );
+    int no_use_id = INVALID_ID;
+    for ( auto& id : _id )
+    {
+        if ( !id.second )
+        {
+            no_use_id = id.first;
+            break;
+        }
+    }
+
+    // tcp_serverの最大人数が255人と設定しているので、ここが呼ばれることはありません。
+    if ( no_use_id == INVALID_ID ) return;
+
+    _connection_handles[no_use_id].ip_address = handle.ip_address;
+    _connection_handles[no_use_id].tcp_port = boost::lexical_cast<int>( handle.port );
+    _connection_handles[no_use_id].udp_port = root["data"]["udp_port"].asInt( );
 
     Json::Value r;
     r["name"] = "id_received";
-    r["data"]["id"] = _id;
+    r["data"]["id"] = no_use_id;
     _execute.tcp( ).write( handle, Json::FastWriter( ).write( r ) );
 }
 std::map<int, connection_handle> const & check_handle::get_connection_handles( ) const
@@ -65,6 +82,7 @@ int check_handle::find_udp_port( std::string const & address, int const & tcp_po
 void check_handle::destroy_connection_handle( int id )
 {
     _connection_handles.erase( id );
+    _id.erase( id );
 }
 }
 }
