@@ -19,8 +19,6 @@ ground::ground( receive_data_execute& execute )
 {
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
 
-    _ground_color_id = std::vector<std::vector<unsigned char>>( ground_size, std::vector<unsigned char>( ground_size ) );
-
     auto dont_destroy_node = scene_manager::get_instans( )->get_dont_destroy_node( ).lock( );
 
     auto player_checker = node::create( );
@@ -30,13 +28,14 @@ ground::ground( receive_data_execute& execute )
     {
         auto check = std::dynamic_pointer_cast<check_handle>( _execute.find( "check_handle" ) );
         std::map<int, int> scores;
-        for ( int y = 0; y < _ground_color_id.size( ); ++y )
+        auto& color_map = _execute.ground_color_mgr( ).get_ground_color_id( );
+        for ( int y = 0; y < color_map.size( ); ++y )
         {
-            for ( int x = 0; x < _ground_color_id[y].size( ); ++x )
+            for ( int x = 0; x < color_map[y].size( ); ++x )
             {
                 for ( auto& handle : check->get_connection_handles( ) )
                 {
-                    if ( _ground_color_id[x][y] == handle.first )
+                    if ( color_map[x][y] == handle.first )
                     {
                         scores[handle.first] += 1;
                     }
@@ -77,37 +76,10 @@ void ground::udp_receive_entry_point( network::network_handle handle, Json::Valu
 
     Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
 
-    for ( int y = rect.y1; y <= rect.y2; ++y )
-    {
-        for ( int x = rect.x1; x <= rect.x2; ++x )
-        {
-            if ( radius < length( vec2( x, y ) - rect.getCenter( ) ) ) continue;
-
-            auto pos = glm::clamp( ivec2( x, y ), ivec2( 0 ), ivec2( ground_size - 1 ) );
-            _ground_color_id[pos.x][pos.y] = id;
-        }
-    }
+    _execute.ground_color_mgr( ).paint_circle( rect, radius, id );
 }
 void ground::tcp_receive_entry_point( network::client_handle handle, Json::Value const& root )
 {
-}
-std::vector<std::vector<unsigned char>>& ground::get_ground_color_id( )
-{
-    return _ground_color_id;
-}
-void ground::clear_color_id( int const & id )
-{
-    for ( int y = 0; y < _ground_color_id.size( ); ++y )
-    {
-        for ( int x = 0; x < _ground_color_id[y].size( ); ++x )
-        {
-            auto& pixel = _ground_color_id[x][y];
-            if ( pixel == id )
-            {
-                pixel = 0;
-            }
-        }
-    }
 }
 }
 }

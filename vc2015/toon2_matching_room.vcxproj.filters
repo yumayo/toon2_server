@@ -278,6 +278,24 @@
     <ClInclude Include="..\src\user\noticed\player_on_captured.h">
       <Filter>User Files\user\noticed</Filter>
     </ClInclude>
+    <ClInclude Include="..\cinder_cocoslike\network\tcp_client_member.h">
+      <Filter>cinder_cocoslike\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cinder_cocoslike\network\tcp_server_member.h">
+      <Filter>cinder_cocoslike\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\create_bullet.h">
+      <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\bullet_manager.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\bullet.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\ground_color_manager.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -478,6 +496,24 @@
     </ClCompile>
     <ClCompile Include="..\src\user\noticed\player_on_captured.cpp">
       <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cinder_cocoslike\network\tcp_server_member.cpp">
+      <Filter>cinder_cocoslike\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cinder_cocoslike\network\tcp_client_member.cpp">
+      <Filter>cinder_cocoslike\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\create_bullet.cpp">
+      <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\bullet_manager.cpp">
+      <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\bullet.cpp">
+      <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\ground_color_manager.cpp">
+      <Filter>User Files\user</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

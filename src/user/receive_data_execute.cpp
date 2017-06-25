@@ -4,9 +4,14 @@
 #include "boost/lexical_cast.hpp"
 namespace user
 {
-receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection, network::udp_connection & udp_connection )
+receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
+                                            network::udp_connection & udp_connection, 
+                                            user::bullet_manager& bullet_manager,
+                                            user::ground_color_manager& ground_color_manager )
     : _tcp_connection( tcp_connection )
     , _udp_connection( udp_connection )
+    , _bullet_manager( bullet_manager )
+    , _ground_color_manager( ground_color_manager )
 {
     using namespace noticed;
     #define regist_operation(_CLASS) _noticed_objects.insert( std::make_pair( #_CLASS, std::make_shared<_CLASS>( *this ) ) )
@@ -17,6 +22,7 @@ receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
     regist_operation( check_handle );
     regist_operation( ground );
     regist_operation( player_on_captured );
+    regist_operation( create_bullet );
 
     #undef regist_operation
 }
@@ -84,5 +90,13 @@ network::tcp_server & receive_data_execute::tcp( )
 network::udp_connection & receive_data_execute::udp( )
 {
     return _udp_connection;
+}
+user::bullet_manager & receive_data_execute::bullet_mgr( )
+{
+    return _bullet_manager;
+}
+user::ground_color_manager & receive_data_execute::ground_color_mgr( )
+{
+    return _ground_color_manager;
 }
 }

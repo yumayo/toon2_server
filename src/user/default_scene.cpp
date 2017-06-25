@@ -14,7 +14,12 @@ bool default_scene::init( )
     add_child( tcp );
     auto udp = network::udp_connection::create( 25565 );
     add_child( udp );
-    _receive_exe = std::make_unique<receive_data_execute>( *tcp, *udp );
+    auto bullet_mgr = bullet_manager::create( );
+    add_child( bullet_mgr );
+    auto ground_color_mgr = ground_color_manager::create( );
+    ground_color_mgr->set_bullet_manager( bullet_mgr );
+    add_child( ground_color_mgr );
+    _receive_exe = std::make_unique<receive_data_execute>( *tcp, *udp, *bullet_mgr, *ground_color_mgr );
 
     tcp->on_readed = [ this ] ( network::client_handle const& handle, char const* data, size_t byte )
     {

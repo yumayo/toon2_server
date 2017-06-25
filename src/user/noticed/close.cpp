@@ -34,8 +34,7 @@ void close::tcp_receive_entry_point( network::client_handle handle, Json::Value 
     r["data"]["udp_port"] = udp_port;
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
 
-    auto ground_color = std::dynamic_pointer_cast<ground>( _execute.find( "ground" ) );
-    ground_color->clear_color_id( target_id );
+    _execute.ground_color_mgr( ).clear_color_id( target_id );
 }
 }
 }

@@ -54,7 +54,7 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
 
     // 適当な位置にスポーンさせます。
     auto spawn_position = cinder::ivec2( _random_device.nextInt( 0, ground_size * ground_scale ), _random_device.nextInt( 0, ground_size * ground_scale ) );
-    
+
     // 全クライアントに通知。
     for ( auto& child : _execute.tcp( ).get_clients( ) )
     {
@@ -87,7 +87,7 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             auto const FEED_NUMBER = feed_objects.size( );
             root["data"]["feed_number"] = FEED_NUMBER;
 
-            auto& color_map = ground_color->get_ground_color_id( );
+            auto& color_map = _execute.ground_color_mgr( ).get_ground_color_id( );
             auto GROUND_SIZE = color_map.size( ); // マップは正方形です。
             root["data"]["ground_size"] = GROUND_SIZE;
 
@@ -160,6 +160,15 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
 void find_room::erase_client_data( int id )
 {
     _client_data.erase( id );
+}
+Json::Value find_room::get_client_data( int id )
+{
+    auto itr = _client_data.find( id );
+    if ( itr != _client_data.end( ) )
+    {
+        return itr->second;
+    }
+    return Json::Value( );
 }
 }
 }
