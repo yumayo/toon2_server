@@ -64,8 +64,8 @@ void ground_color_manager::paint_circle( cinder::Rectf rect, float radius, int i
         for ( int x = rect.x1; x <= rect.x2; ++x )
         {
             if ( radius < glm::length( cinder::vec2( x, y ) - rect.getCenter( ) ) ) continue;
-
-            auto pos = glm::clamp( cinder::ivec2( x, y ), cinder::ivec2( 0 ), cinder::ivec2( ground_size - 1 ) );
+            if ( x < 0 || y < 0 || x >= ground_size || y >= ground_size ) continue;
+            auto pos = cinder::ivec2( x, y );
             _ground_color_id[pos.x][pos.y] = id;
         }
     }

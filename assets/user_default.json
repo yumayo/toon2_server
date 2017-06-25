@@ -1,5 +1,5 @@
 {
+   "bullet_radius" : 20,
    "ground_scale" : 16,
-   "ground_size" : 128,
-   "bullet_radius": 20.0
+   "ground_size" : 128
 }

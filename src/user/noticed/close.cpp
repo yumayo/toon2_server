@@ -35,6 +35,8 @@ void close::tcp_receive_entry_point( network::client_handle handle, Json::Value 
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
 
     _execute.ground_color_mgr( ).clear_color_id( target_id );
+
+    _execute.bullet_mgr( ).clear_bullet_id( target_id );
 }
 }
 }
