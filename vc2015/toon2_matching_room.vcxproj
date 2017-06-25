@@ -168,6 +168,7 @@
     <ClCompile Include="..\src\user\bullet_manager.cpp" />
     <ClCompile Include="..\src\user\default_scene.cpp" />
     <ClCompile Include="..\src\user\ground_color_manager.cpp" />
+    <ClCompile Include="..\src\user\noticed\blowout.cpp" />
     <ClCompile Include="..\src\user\noticed\check_handle.cpp" />
     <ClCompile Include="..\src\user\noticed\close.cpp" />
     <ClCompile Include="..\src\user\noticed\create_bullet.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="..\src\user\default_scene.h" />
     <ClInclude Include="..\src\user\ground_color_manager.h" />
     <ClInclude Include="..\src\user\noticed.hpp" />
+    <ClInclude Include="..\src\user\noticed\blowout.h" />
     <ClInclude Include="..\src\user\noticed\check_handle.h" />
     <ClInclude Include="..\src\user\noticed\close.h" />
     <ClInclude Include="..\src\user\noticed\create_bullet.h" />

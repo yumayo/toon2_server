@@ -23,6 +23,7 @@ receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
     regist_operation( ground );
     regist_operation( player_on_captured );
     regist_operation( create_bullet );
+    regist_operation( blowout );
 
     #undef regist_operation
 }

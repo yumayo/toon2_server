@@ -296,6 +296,9 @@
     <ClInclude Include="..\src\user\ground_color_manager.h">
       <Filter>User Files\user</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\user\noticed\blowout.h">
+      <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -514,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="..\src\user\ground_color_manager.cpp">
       <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\blowout.cpp">
+      <Filter>User Files\user\noticed</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

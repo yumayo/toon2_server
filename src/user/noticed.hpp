@@ -8,3 +8,4 @@
 #include "noticed/ground.h"
 #include "noticed/player_on_captured.h"
 #include "noticed/create_bullet.h"
+#include "noticed/blowout.h"
