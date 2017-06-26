@@ -1,6 +1,7 @@
 ﻿#include "default_scene.h"
 #include "network.hpp"
 #include "boost/lexical_cast.hpp"
+#include "user_default.h"
 using namespace cinder;
 namespace user
 {
@@ -10,9 +11,13 @@ CREATE_CPP( default_scene )
 }
 bool default_scene::init( )
 {
-    auto tcp = network::tcp_server::create( "25564", 255 );
+    int udp_port = user_default::get_instans( )->get_root( )["udp_port"].asInt( );
+    int tcp_port = user_default::get_instans( )->get_root( )["tcp_port"].asInt( );
+    int maximum_clients = user_default::get_instans( )->get_root( )["maximum_clients"].asInt( );
+
+    auto tcp = network::tcp_server::create( boost::lexical_cast<std::string>( tcp_port ), maximum_clients );
     add_child( tcp );
-    auto udp = network::udp_connection::create( 25565 );
+    auto udp = network::udp_connection::create( udp_port );
     add_child( udp );
     auto bullet_mgr = bullet_manager::create( );
     add_child( bullet_mgr );

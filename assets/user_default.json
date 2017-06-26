@@ -1,5 +1,8 @@
 {
    "bullet_radius" : 20,
    "ground_scale" : 16,
-   "ground_size" : 128
+   "ground_size" : 128,
+   "udp_port": 25565,
+   "tcp_port": 25564,
+   "maximum_clients": 255
 }
