@@ -6,7 +6,6 @@ namespace noticed
 {
 class create_bullet : public noticed_base
 {
-    int _tag = 0;
 public:
     create_bullet( receive_data_execute& execute );
 public:

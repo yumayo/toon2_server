@@ -26,14 +26,13 @@ ground::ground( receive_data_execute& execute )
     player_checker->run_action( action::repeat_forever::create( action::sequence::create( action::delay::create( 1.0f ), action::call_func::create(
         [ this ]
     {
-        auto check = std::dynamic_pointer_cast<check_handle>( _execute.find( "check_handle" ) );
         std::map<int, int> scores;
         auto& color_map = _execute.ground_color_mgr( ).get_ground_color_id( );
         for ( int y = 0; y < color_map.size( ); ++y )
         {
             for ( int x = 0; x < color_map[y].size( ); ++x )
             {
-                for ( auto& handle : check->get_connection_handles( ) )
+                for ( auto& handle : _execute.user_handle_mgr( ).get_user_handles( ) )
                 {
                     if ( color_map[x][y] == handle.first )
                     {
@@ -63,8 +62,7 @@ ground::ground( receive_data_execute& execute )
 }
 void ground::udp_receive_entry_point( network::network_handle handle, Json::Value const& root )
 {
-    auto check = std::dynamic_pointer_cast<check_handle>( _execute.find( "check_handle" ) );
-    auto id = check->find_id( handle->ip_address, handle->port );
+    auto id = _execute.user_handle_mgr( ).find_id( handle );
 
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );

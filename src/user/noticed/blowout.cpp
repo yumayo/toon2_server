@@ -16,9 +16,7 @@ void blowout::udp_receive_entry_point( network::network_handle handle, Json::Val
 }
 void blowout::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
 {
-    auto check = std::dynamic_pointer_cast<check_handle>( _execute.find( "check_handle" ) );
-
-    _execute.bullet_mgr( ).remove_child_by_tag( root["data"]["id"].asInt( ) );
+    _execute.bullet_mgr( ).remove( root["data"]["id"].asInt( ) );
 
     Json::Value r;
     r["name"] = "erase_bullet";

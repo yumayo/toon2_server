@@ -236,9 +236,6 @@
     <ClInclude Include="..\src\main.h">
       <Filter>User Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\user\connection_handle.h">
-      <Filter>User Files\user</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\user\default_scene.h">
       <Filter>User Files\user</Filter>
     </ClInclude>
@@ -298,6 +295,24 @@
     </ClInclude>
     <ClInclude Include="..\src\user\noticed\blowout.h">
       <Filter>User Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\feed_manager.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\feed.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\user_handle_manager.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\user_handle.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cinder_cocoslike\utility\base64.h">
+      <Filter>cinder_cocoslike\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cinder_cocoslike\utility\file_system.h">
+      <Filter>cinder_cocoslike\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +535,22 @@
     </ClCompile>
     <ClCompile Include="..\src\user\noticed\blowout.cpp">
       <Filter>User Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\feed_manager.cpp">
+      <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\feed.cpp">
+      <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\user_handle_manager.cpp">
+      <Filter>User Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\user_handle.cpp" />
+    <ClCompile Include="..\cinder_cocoslike\utility\base64.cpp">
+      <Filter>cinder_cocoslike\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cinder_cocoslike\utility\file_system.cpp">
+      <Filter>cinder_cocoslike\utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

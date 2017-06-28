@@ -13,7 +13,7 @@ public:
     void update( float delta ) override;
 public:
     std::vector<std::vector<unsigned char>>& get_ground_color_id( );
-    void clear_color_id( int const& id );
+    void clear( int const& user_id );
     void paint_circle( cinder::Rectf rect, float radius, int id );
 };
 }

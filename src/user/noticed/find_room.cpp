@@ -21,39 +21,23 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
 
-    auto check = std::dynamic_pointer_cast<check_handle>( _execute.find( "check_handle" ) );
-
     int id = root["data"]["id"].asInt( );
 
-    auto itr = check->get_connection_handles( ).find( id );
-    if ( itr != check->get_connection_handles( ).end( ) )
+    auto c = _execute.user_handle_mgr( ).find_client( id );
+    if ( c.first )
     {
-        _client_data[id] = root["data"]; // スキンや他のデータを詰める。
-        _client_data[id]["ip_address"] = itr->second.ip_address;
-        _client_data[id]["udp_port"] = itr->second.udp_port;
-        _client_data[id]["tcp_port"] = itr->second.tcp_port;
-
+        c.second->second.root = root["data"];
         auto color = cinder::hsvToRgb( cinder::vec3( _random_device.nextFloat( ),
                                                      _random_device.nextFloat( 0.6F, 0.8F ),
                                                      _random_device.nextFloat( 0.7F, 0.8F ) ) );
-        _client_data[id]["color"][0] = color.r;
-        _client_data[id]["color"][1] = color.g;
-        _client_data[id]["color"][2] = color.b;
-
-        cinder::app::console( ) << "全てのクライアントデータ" << std::endl;
-        for ( auto& client : _client_data )
-        {
-            utility::log( "ID[%d]", client.first );
-            cinder::app::console( ) << client.second;
-        }
-        cinder::app::console( ) << std::endl;
+        c.second->second.root["color"][0] = color.r;
+        c.second->second.root["color"][1] = color.g;
+        c.second->second.root["color"][2] = color.b;
     }
 
-    auto ground_color = std::dynamic_pointer_cast<ground>( _execute.find( "ground" ) );
-    auto feed_mgr = std::dynamic_pointer_cast<feed_captured>( _execute.find( "feed_captured" ) );
-
     // 適当な位置にスポーンさせます。
-    auto spawn_position = cinder::ivec2( _random_device.nextInt( 0, ground_size * ground_scale ), _random_device.nextInt( 0, ground_size * ground_scale ) );
+    auto spawn_position = cinder::ivec2( _random_device.nextInt( 0, ground_size * ground_scale ),
+                                         _random_device.nextInt( 0, ground_size * ground_scale ) );
 
     // 全クライアントに通知。
     for ( auto& child : _execute.tcp( ).get_clients( ) )
@@ -64,26 +48,24 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             // 接続してきたオブジェクト自身のデータを詰めます。
             Json::Value root;
             root["name"] = "founded";
-            root["data"] = _client_data[id];
-
+            root["data"] = c.second->second.create_user_data( );
             root["data"]["position"][0] = spawn_position.x;
             root["data"]["position"][1] = spawn_position.y;
-
             root["data"]["ground_size"] = ground_size;
             root["data"]["ground_scale"] = ground_scale;
 
             // サーバーに接続中のオブジェクト全てのデータを詰めます。
             {
                 int index = 0;
-                for ( auto& c : _client_data )
+                for ( auto& user : _execute.user_handle_mgr( ).get_user_handles( ) )
                 {
-                    if ( c.first == id ) continue;
-                    root["data"]["clients"][index] = c.second;
+                    if ( user.first == id ) continue;
+                    root["data"]["clients"][index] = c.second->second.create_user_data( );
                     index++;
                 }
             }
 
-            auto& feed_objects = feed_mgr->get_feed_objects( );
+            auto& feed_objects = _execute.feed_mgr( ).get_children( );
             auto const FEED_NUMBER = feed_objects.size( );
             root["data"]["feed_number"] = FEED_NUMBER;
 
@@ -120,9 +102,9 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 for ( auto& feed : feed_objects )
                 {
                     feed_data* f = new( feed_data_and_ground_data.get( ) + index ) feed_data;
-                    f->tag = feed.first;
-                    f->x = feed.second.x;
-                    f->y = feed.second.y;
+                    f->tag = feed->get_tag( );
+                    f->x = feed->get_position( ).x;
+                    f->y = feed->get_position( ).y;
                     index += sizeof( feed_data );
                 }
             }
@@ -142,33 +124,21 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                         index += sizeof( unsigned char );
                     }
                 }
-                _execute.tcp( ).write( child, (char*)feed_data_and_ground_data.get( ), index );
             }
+
+            _execute.tcp( ).write( child, (char*)feed_data_and_ground_data.get( ), index );
         }
         // それ以外の人には新しくクライアントが来たという情報を提供します。
         else
         {
             Json::Value root;
             root["name"] = "new_client";
-            root["data"] = _client_data[id];
+            root["data"] = c.second->second.create_user_data( );
             root["data"]["position"][0] = spawn_position.x;
             root["data"]["position"][1] = spawn_position.y;
             _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
         }
     }
-}
-void find_room::erase_client_data( int id )
-{
-    _client_data.erase( id );
-}
-Json::Value find_room::get_client_data( int id )
-{
-    auto itr = _client_data.find( id );
-    if ( itr != _client_data.end( ) )
-    {
-        return itr->second;
-    }
-    return Json::Value( );
 }
 }
 }

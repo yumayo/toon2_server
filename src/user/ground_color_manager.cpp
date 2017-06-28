@@ -40,14 +40,14 @@ std::vector<std::vector<unsigned char>>& ground_color_manager::get_ground_color_
 {
     return _ground_color_id;
 }
-void ground_color_manager::clear_color_id( int const & id )
+void ground_color_manager::clear( int const & user_id )
 {
     for ( int y = 0; y < _ground_color_id.size( ); ++y )
     {
         for ( int x = 0; x < _ground_color_id[y].size( ); ++x )
         {
             auto& pixel = _ground_color_id[x][y];
-            if ( pixel == id )
+            if ( pixel == user_id )
             {
                 pixel = 0;
             }

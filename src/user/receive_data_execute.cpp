@@ -5,13 +5,17 @@
 namespace user
 {
 receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
-                                            network::udp_connection & udp_connection, 
+                                            network::udp_connection & udp_connection,
                                             user::bullet_manager& bullet_manager,
-                                            user::ground_color_manager& ground_color_manager )
+                                            user::ground_color_manager& ground_color_manager,
+                                            user::feed_manager& feed_manager,
+                                            user::user_handle_manager& user_handle_manager )
     : _tcp_connection( tcp_connection )
     , _udp_connection( udp_connection )
     , _bullet_manager( bullet_manager )
     , _ground_color_manager( ground_color_manager )
+    , _feed_manager( feed_manager )
+    , _user_handle_manager( user_handle_manager )
 {
     using namespace noticed;
     #define regist_operation(_CLASS) _noticed_objects.insert( std::make_pair( #_CLASS, std::make_shared<_CLASS>( *this ) ) )
@@ -99,5 +103,19 @@ user::bullet_manager & receive_data_execute::bullet_mgr( )
 user::ground_color_manager & receive_data_execute::ground_color_mgr( )
 {
     return _ground_color_manager;
+}
+user::feed_manager & receive_data_execute::feed_mgr( )
+{
+    return _feed_manager;
+}
+user::user_handle_manager & receive_data_execute::user_handle_mgr( )
+{
+    return _user_handle_manager;
+}
+void receive_data_execute::clear( int const & user_id )
+{
+    _ground_color_manager.clear( user_id );
+    _bullet_manager.clear( user_id );
+    _user_handle_manager.clear( user_id );
 }
 }
