@@ -23,16 +23,19 @@ void ground_color_manager::update( float delta )
 {
     auto bullet_manager = std::dynamic_pointer_cast<user::bullet_manager>( _bullet_manager.lock( ) );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
-    for ( auto const& c : bullet_manager->get_children( ) )
+    for ( auto const& folder : bullet_manager->get_children( ) )
     {
-        if ( auto const& bullet = std::dynamic_pointer_cast<user::bullet>( c ) )
+        for ( auto const& c : folder->get_children( ) )
         {
-            auto radius = bullet->get_radius( ) / (float)ground_scale;
-            auto pixel = cinder::vec2( bullet->get_position( ) / (float)ground_scale );
+            if ( auto const& bullet = std::dynamic_pointer_cast<user::bullet>( c ) )
+            {
+                auto radius = bullet->get_radius( ) / (float)ground_scale;
+                auto pixel = cinder::vec2( bullet->get_position( ) / (float)ground_scale );
 
-            cinder::Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
+                cinder::Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
 
-            paint_circle( rect, bullet->get_radius( ), bullet->get_tag( ) );
+                paint_circle( rect, bullet->get_radius( ), bullet->set_user_id( ) );
+            }
         }
     }
 }
@@ -54,7 +57,7 @@ void ground_color_manager::clear( int const & user_id )
         }
     }
 }
-void ground_color_manager::paint_circle( cinder::Rectf rect, float radius, int id )
+void ground_color_manager::paint_circle( cinder::Rectf rect, float radius, int user_id )
 {
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
@@ -66,7 +69,7 @@ void ground_color_manager::paint_circle( cinder::Rectf rect, float radius, int i
             if ( radius < glm::length( cinder::vec2( x, y ) - rect.getCenter( ) ) ) continue;
             if ( x < 0 || y < 0 || x >= ground_size || y >= ground_size ) continue;
             auto pos = cinder::ivec2( x, y );
-            _ground_color_id[pos.x][pos.y] = id;
+            _ground_color_id[pos.x][pos.y] = user_id;
         }
     }
 }

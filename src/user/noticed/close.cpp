@@ -16,13 +16,13 @@ void close::udp_receive_entry_point( network::network_handle handle, Json::Value
 }
 void close::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
 {
-    _execute.clear( _execute.user_handle_mgr( ).find_id( handle ) );
-
     Json::Value r;
     r["name"] = "close_client";
     r["data"]["ip_address"] = handle.ip_address;
     r["data"]["udp_port"] = _execute.user_handle_mgr( ).find_udp_port( handle );
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
+
+    _execute.clear( _execute.user_handle_mgr( ).find_id( handle ) );
 }
 }
 }

@@ -60,7 +60,7 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 for ( auto& user : _execute.user_handle_mgr( ).get_user_handles( ) )
                 {
                     if ( user.first == id ) continue;
-                    root["data"]["clients"][index] = c.second->second.create_user_data( );
+                    root["data"]["clients"][index] = user.second.create_user_data( );
                     index++;
                 }
             }
