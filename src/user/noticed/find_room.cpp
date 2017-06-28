@@ -88,30 +88,31 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 int x;
                 int y;
             };
-            std::unique_ptr<unsigned char [ ]> feed_data_and_ground_data( new unsigned char[
-                sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER +
-                    sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE] );
-
-            int index = 0;
+            
             {
-                header* feed_header = new( feed_data_and_ground_data.get( ) + index ) header;
+                std::unique_ptr<unsigned char [ ]> feed_binary_data( new unsigned char [sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER] );
+                int index = 0;
+                header* feed_header = new( feed_binary_data.get( ) + index ) header;
                 std::memcpy( feed_header->name, "feed_data", sizeof( "feed_data" ) );
                 feed_header->byte = sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER;
                 index += sizeof( header );
 
                 for ( auto& feed : feed_objects )
                 {
-                    feed_data* f = new( feed_data_and_ground_data.get( ) + index ) feed_data;
+                    feed_data* f = new( feed_binary_data.get( ) + index ) feed_data;
                     f->tag = feed->get_tag( );
                     f->x = feed->get_position( ).x;
                     f->y = feed->get_position( ).y;
                     index += sizeof( feed_data );
                 }
+                _execute.tcp( ).write( child, (char*)feed_binary_data.get( ), index );
             }
 
             // グラウンドの状況を詰めます。
             {
-                header* feed_header = new( feed_data_and_ground_data.get( ) + index ) header;
+                std::unique_ptr<unsigned char [ ]> ground_binary_data( new unsigned char[sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE] );
+                int index = 0;
+                header* feed_header = new( ground_binary_data.get( ) + index ) header;
                 std::memcpy( feed_header->name, "ground_data", sizeof( "ground_data" ) );
                 feed_header->byte = sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE;
                 index += sizeof( header );
@@ -120,13 +121,12 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 {
                     for ( int x = 0; x < color_map.size( ); ++x )
                     {
-                        feed_data_and_ground_data[index] = color_map[x][y];
+                        ground_binary_data[index] = color_map[x][y];
                         index += sizeof( unsigned char );
                     }
                 }
+                _execute.tcp( ).write( child, (char*)ground_binary_data.get( ), index );
             }
-
-            _execute.tcp( ).write( child, (char*)feed_data_and_ground_data.get( ), index );
         }
         // それ以外の人には新しくクライアントが来たという情報を提供します。
         else
