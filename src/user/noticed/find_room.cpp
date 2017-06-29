@@ -117,9 +117,9 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 feed_header->byte = sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE;
                 index += sizeof( header );
 
-                for ( int y = 0; y < color_map.size( ); ++y )
+                for ( int y = 0; y < GROUND_SIZE; ++y )
                 {
-                    for ( int x = 0; x < color_map.size( ); ++x )
+                    for ( int x = 0; x < GROUND_SIZE; ++x )
                     {
                         ground_binary_data[index] = color_map[x][y];
                         index += sizeof( unsigned char );
