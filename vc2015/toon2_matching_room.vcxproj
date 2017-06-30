@@ -259,6 +259,7 @@
     <ClInclude Include="..\src\main.h" />
     <ClInclude Include="..\src\user\bullet.h" />
     <ClInclude Include="..\src\user\bullet_manager.h" />
+    <ClInclude Include="..\src\user\synchronization_objects.h" />
     <ClInclude Include="..\src\user\user_handle.h" />
     <ClInclude Include="..\src\user\default_scene.h" />
     <ClInclude Include="..\src\user\feed.h" />

@@ -5,14 +5,14 @@ namespace user
 class bullet : public node
 {
 public:
-    bool init( cinder::vec2 position, cinder::vec2 direction, int user_id, int bullet_id );
+    bool init( cinder::vec2 position, cinder::vec2 direction, int bullet_id );
     void update( float delta ) override;
     float const& get_radius( ) const;
-    void set_user_id( int value );
-    int const& set_user_id( ) const;
+    cinder::vec2 const& get_direction( ) const;
+    float const& get_time_remaining( ) const;
 private:
     cinder::vec2 _direction = cinder::vec2( 0 );
     float _radius = 20.0F;
-    int user_id = 0;
+    float _time_remaining = 0.0F;
 };
 }

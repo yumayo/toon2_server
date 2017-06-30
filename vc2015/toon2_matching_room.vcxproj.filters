@@ -314,6 +314,9 @@
     <ClInclude Include="..\cinder_cocoslike\utility\file_system.h">
       <Filter>cinder_cocoslike\utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\user\synchronization_objects.h">
+      <Filter>User Files\user</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">

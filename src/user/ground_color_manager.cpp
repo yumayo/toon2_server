@@ -34,7 +34,7 @@ void ground_color_manager::update( float delta )
 
                 cinder::Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
 
-                paint_circle( rect, radius, bullet->set_user_id( ) );
+                paint_circle( rect, radius, folder->get_tag( ) );
             }
         }
     }

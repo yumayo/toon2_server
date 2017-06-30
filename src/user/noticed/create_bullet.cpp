@@ -18,14 +18,19 @@ void create_bullet::udp_receive_entry_point( network::network_handle handle, Jso
 }
 void create_bullet::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
 {
-    auto pos = vec2( root["data"]["position"][0].asFloat( ), root["data"]["position"][1].asFloat( ) );
-    auto direction = vec2( root["data"]["direction"][0].asFloat( ), root["data"]["direction"][1].asFloat( ) );
-    auto id = _execute.user_handle_mgr( ).find_id( handle );
-    auto bullet = _execute.bullet_mgr( ).add_bullet( pos, direction, id );
-    
+    int index = 0;
     Json::Value r;
-    r = root;
-    r["data"]["tag"] = bullet->get_tag( );
+    r["name"] = "create_bullet";
+    for ( int i = 0; i < index; ++i )
+    {
+        auto& data = root["data"][index];
+        auto pos = vec2( data["position"][0].asFloat( ), data["position"][1].asFloat( ) );
+        auto direction = vec2( data["direction"][0].asFloat( ), data["direction"][1].asFloat( ) );
+        auto user_id = data["user_id"].asInt( );
+        auto bullet = _execute.bullet_mgr( ).add_bullet( pos, direction, user_id );
+        r["data"][index]["bullet_id"] = bullet->get_tag( );
+        index++;
+    }
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
 }
 }
