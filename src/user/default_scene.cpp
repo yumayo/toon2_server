@@ -56,4 +56,8 @@ bool default_scene::init( )
 
     return true;
 }
+receive_data_execute & default_scene::execute( )
+{
+    return *_receive_exe.get( );
+}
 }

@@ -25,16 +25,16 @@ void ground_color_manager::update( float delta )
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
     for ( auto const& folder : bullet_manager->get_children( ) )
     {
-        for ( auto const& c : folder->get_children( ) )
+        for ( auto const& bullet_node : folder->get_children( ) )
         {
-            if ( auto const& bullet = std::dynamic_pointer_cast<user::bullet>( c ) )
+            if ( auto const& bullet = std::dynamic_pointer_cast<user::bullet>( bullet_node ) )
             {
                 auto radius = bullet->get_radius( ) / (float)ground_scale;
                 auto pixel = cinder::vec2( bullet->get_position( ) / (float)ground_scale );
 
                 cinder::Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
 
-                paint_circle( rect, radius, bullet->set_user_id( ) );
+                paint_circle( rect, radius, folder->get_tag( ) );
             }
         }
     }

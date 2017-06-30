@@ -4,6 +4,7 @@
 #include "user_default.h"
 #include "utility.hpp"
 #include "ground.h"
+#include "../synchronization_objects.h"
 namespace user
 {
 namespace noticed
@@ -67,7 +68,7 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
 
             auto& feed_objects = _execute.feed_mgr( ).get_children( );
             auto const FEED_NUMBER = feed_objects.size( );
-            root["data"]["feed_number"] = FEED_NUMBER;
+            root["data"]["number_of_feed"] = FEED_NUMBER;
 
             auto& color_map = _execute.ground_color_mgr( ).get_ground_color_id( );
             auto GROUND_SIZE = color_map.size( ); // マップは正方形です。
@@ -76,43 +77,54 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             // ひとまず先にデータを送ります。
             _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
 
-            // エサの情報とグラウンドの情報を全て詰めます。
-            struct header
+            // フィールドに飛んでいるバレットを同期します。
             {
-                char name[16];
-                int byte;
-            };
-            struct feed_data
+                Json::Value r;
+                r["name"] = "bullet_data";
+                int i = 0;
+                for ( auto& folder : _execute.bullet_mgr( ).get_children( ) )
+                {
+                    int j = 0;
+                    for ( auto& bullet_node : folder->get_children( ) )
+                    {
+                        auto bullet = std::dynamic_pointer_cast<user::bullet>( bullet_node );
+                        auto& data = r["data"][i][j];
+                        data["position"][0] = bullet->get_position( ).x;
+                        data["position"][1] = bullet->get_position( ).y;
+                        data["direction"][0] = bullet->get_direction( ).x;
+                        data["direction"][1] = bullet->get_direction( ).y;
+                        data["user_id"] = folder->get_tag( );
+                        data["bullet_id"] = bullet->get_tag( );
+                        data["time_offset"] = bullet->get_time_remaining( );
+                        j++;
+                    }
+                    i++;
+                }
+                _execute.tcp( ).write( child, Json::FastWriter( ).write( r ) );
+            }
+            // エサの情報を詰めます。
             {
-                int tag;
-                int x;
-                int y;
-            };
-            
-            {
-                std::unique_ptr<unsigned char [ ]> feed_binary_data( new unsigned char [sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER] );
+                std::unique_ptr<unsigned char [ ]> binary( new unsigned char[sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER] );
                 int index = 0;
-                header* feed_header = new( feed_binary_data.get( ) + index ) header;
+                header* feed_header = new( binary.get( ) + index ) header;
                 std::memcpy( feed_header->name, "feed_data", sizeof( "feed_data" ) );
                 feed_header->byte = sizeof( header ) + sizeof( feed_data ) * FEED_NUMBER;
                 index += sizeof( header );
 
-                for ( auto& feed : feed_objects )
+                for ( auto& feed_node : feed_objects )
                 {
-                    feed_data* f = new( feed_binary_data.get( ) + index ) feed_data;
-                    f->tag = feed->get_tag( );
-                    f->x = feed->get_position( ).x;
-                    f->y = feed->get_position( ).y;
+                    feed_data* f = new( binary.get( ) + index ) feed_data;
+                    f->id = feed_node->get_tag( );
+                    f->position = feed_node->get_position( );
                     index += sizeof( feed_data );
                 }
-                _execute.tcp( ).write( child, (char*)feed_binary_data.get( ), index );
+                _execute.tcp( ).write( child, (char*)binary.get( ), index );
             }
-
             // グラウンドの状況を詰めます。
             {
-                std::unique_ptr<unsigned char [ ]> ground_binary_data( new unsigned char[sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE] );
+                std::unique_ptr<unsigned char [ ]> binary( new unsigned char[sizeof( header ) + sizeof( ground_data ) * GROUND_SIZE * GROUND_SIZE] );
                 int index = 0;
-                header* feed_header = new( ground_binary_data.get( ) + index ) header;
+                header* feed_header = new( binary.get( ) + index ) header;
                 std::memcpy( feed_header->name, "ground_data", sizeof( "ground_data" ) );
                 feed_header->byte = sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE;
                 index += sizeof( header );
@@ -121,11 +133,23 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
                 {
                     for ( int x = 0; x < GROUND_SIZE; ++x )
                     {
-                        ground_binary_data[index] = color_map[x][y];
-                        index += sizeof( unsigned char );
+                        ground_data* data = new( binary.get( ) + index ) ground_data;
+                        data->id = color_map[x][y];
+                        index += sizeof( ground_data );
                     }
                 }
-                _execute.tcp( ).write( child, (char*)ground_binary_data.get( ), index );
+                _execute.tcp( ).write( child, (char*)binary.get( ), index );
+            }
+            // 終わりという情報を送ります。
+            {
+                std::unique_ptr<unsigned char [ ]> binary( new unsigned char[sizeof( header )] );
+                int index = 0;
+                header* feed_header = new( binary.get( ) + index ) header;
+                std::memcpy( feed_header->name, "finished", sizeof( "finished" ) );
+                feed_header->byte = sizeof( header ) + sizeof( unsigned char ) * GROUND_SIZE * GROUND_SIZE;
+                index += sizeof( header );
+
+                _execute.tcp( ).write( child, (char*)binary.get( ), index );
             }
         }
         // それ以外の人には新しくクライアントが来たという情報を提供します。
