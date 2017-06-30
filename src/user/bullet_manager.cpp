@@ -9,22 +9,6 @@ CREATE_CPP( bullet_manager )
 }
 bool bullet_manager::init( )
 {
-    //using namespace action;
-    //run_action( sequence::create( delay::create( 2.0F ), call_func::create( [ this ]
-    //{
-    //    auto& execute = std::dynamic_pointer_cast<default_scene>( get_parent( ) )->execute( );
-    //    Json::Value root;
-    //    auto pos = cinder::vec2( 0 );
-    //    auto direction = glm::normalize( cinder::vec2( 1, 1 ) );
-    //    auto id = 1;
-    //    root["data"]["position"][0] = pos.x;
-    //    root["data"]["position"][1] = pos.y;
-    //    root["data"]["direction"][0] = direction.x;
-    //    root["data"]["direction"][1] = direction.y;
-    //    root["data"]["id"] = 1;
-    //    auto bullet = execute.bullet_mgr( ).add_bullet( pos, direction, id );
-    //    execute.tcp( ).speech( Json::FastWriter( ).write( root ) );
-    //} ) ) );
     return true;
 }
 std::shared_ptr<bullet> bullet_manager::add_bullet( cinder::vec2 position, cinder::vec2 direction, int user_id )

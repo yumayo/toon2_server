@@ -74,38 +74,33 @@ void find_room::tcp_receive_entry_point( network::client_handle handle, Json::Va
             auto GROUND_SIZE = color_map.size( ); // マップは正方形です。
             root["data"]["ground_size"] = GROUND_SIZE;
 
-            auto& bullet_objects = _execute.bullet_mgr( ).get_children( );
-            auto NUMBER_OF_BULLET = bullet_objects.size( );
-            root["data"]["number_of_bullet"] = NUMBER_OF_BULLET;
-
             // ひとまず先にデータを送ります。
             _execute.tcp( ).write( child, Json::FastWriter( ).write( root ) );
 
             // フィールドに飛んでいるバレットを同期します。
             {
-                std::unique_ptr<unsigned char [ ]> binary( new unsigned char[sizeof( header ) + sizeof( bullet_data ) * FEED_NUMBER] );
-                int index = 0;
-                header* feed_header = new( binary.get( ) + index ) header;
-                std::memcpy( feed_header->name, "bullet_data", sizeof( "bullet_data" ) );
-                feed_header->byte = sizeof( header ) + sizeof( bullet_data ) * NUMBER_OF_BULLET;
-                index += sizeof( header );
-
-                for ( auto& bullet_folder : bullet_objects )
+                Json::Value r;
+                r["name"] = "bullet_data";
+                int i = 0;
+                for ( auto& folder : _execute.bullet_mgr( ).get_children( ) )
                 {
-                    for ( auto& bullet_node : bullet_folder->get_children( ) )
+                    int j = 0;
+                    for ( auto& bullet_node : folder->get_children( ) )
                     {
                         auto bullet = std::dynamic_pointer_cast<user::bullet>( bullet_node );
-                        bullet_data* b = new( binary.get( ) + index ) bullet_data;
-                        b->position = bullet->get_position( );
-                        b->direction = bullet->get_direction( );
-                        b->user_id = bullet_folder->get_tag( );
-                        b->id = bullet->get_tag( );
-                        b->time_remaining = bullet->get_time_remaining( );
-                        index += sizeof( bullet_data );
+                        auto& data = r["data"][i][j];
+                        data["position"][0] = bullet->get_position( ).x;
+                        data["position"][1] = bullet->get_position( ).y;
+                        data["direction"][0] = bullet->get_direction( ).x;
+                        data["direction"][1] = bullet->get_direction( ).y;
+                        data["user_id"] = folder->get_tag( );
+                        data["bullet_id"] = bullet->get_tag( );
+                        data["time_offset"] = bullet->get_time_remaining( );
+                        j++;
                     }
+                    i++;
                 }
-
-                _execute.tcp( ).write( child, (char*)binary.get( ), index );
+                _execute.tcp( ).write( child, Json::FastWriter( ).write( r ) );
             }
             // エサの情報を詰めます。
             {
