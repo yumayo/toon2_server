@@ -1,9 +1,9 @@
 #pragma once
-#include "scene.h"
+#include <treelike/scene.h>
 #include "receive_data_execute.h"
 namespace user
 {
-class default_scene : public scene
+class default_scene : public treelike::scene
 {
     std::unique_ptr<receive_data_execute> _receive_exe;
 public:

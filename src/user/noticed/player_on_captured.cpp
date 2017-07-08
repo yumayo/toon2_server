@@ -1,7 +1,6 @@
 ﻿#include "player_on_captured.h"
 #include "find_room.h"
 #include "check_handle.h"
-#include "boost/lexical_cast.hpp"
 #include "ground.h"
 namespace user
 {
@@ -11,10 +10,10 @@ player_on_captured::player_on_captured( receive_data_execute& execute )
     : noticed_base( execute )
 {
 }
-void player_on_captured::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void player_on_captured::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
 }
-void player_on_captured::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void player_on_captured::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     auto client = _execute.user_handle_mgr( ).find_client( root["data"]["id"].asInt( ) );
 
@@ -23,7 +22,7 @@ void player_on_captured::tcp_receive_entry_point( network::client_handle handle,
         Json::Value r;
         r["name"] = "player_capture";
         r["data"]["score"] = root["data"]["score"];
-        _execute.tcp( ).write( network::client_handle( client.second->second.ip_address, boost::lexical_cast<std::string>( client.second->second.tcp_port ) ),
+        _execute.tcp( ).write( treelike::network::network_handle( client.second->second.ip_address, client.second->second.tcp_port ),
                                Json::FastWriter( ).write( r ) );
     }
 

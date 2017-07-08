@@ -1,10 +1,10 @@
 #pragma once
-#include "node.h"
+#include <treelike/node.h>
 #include "cinder/Rand.h"
 #include "feed.h"
 namespace user
 {
-class feed_manager : public node
+class feed_manager : public treelike::node
 {
     std::shared_ptr<cinder::Rand> _random_handle;
     int _id = 0;

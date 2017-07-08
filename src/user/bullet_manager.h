@@ -1,9 +1,9 @@
 #pragma once
-#include "node.h"
+#include <treelike/node.h>
 #include "bullet.h"
 namespace user
 {
-class bullet_manager : public node
+class bullet_manager : public treelike::node
 {
     int _id = 0;
 public:

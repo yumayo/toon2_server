@@ -1,8 +1,8 @@
 ﻿#include "feed_captured.h"
-#include "boost/lexical_cast.hpp"
-#include "user_default.h"
-#include "utility.hpp"
+#include <treelike/user_default.h>
+#include <treelike/utility.hpp>
 #include "check_handle.h"
+using namespace treelike;
 namespace user
 {
 namespace noticed
@@ -11,10 +11,10 @@ feed_captured::feed_captured( receive_data_execute& execute )
     : noticed_base( execute )
 {
 }
-void feed_captured::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void feed_captured::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
 }
-void feed_captured::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void feed_captured::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     utility::log( "エサがID[%d]番に食べられました。", _execute.user_handle_mgr( ).find_id( handle ) );
     cinder::app::console( ) << root["data"];

@@ -1,9 +1,14 @@
-#include "app_delegate.h"
-#include "cinder/app/RendererGl.h"
-CINDER_APP( app_delegate, cinder::app::RendererGl, [ & ] ( cinder::app::App::Settings *settings )
+#include <treelike/app_delegate.h>
+#include "user/default_scene.h"
+namespace treelike
 {
-    //settings->setConsoleWindowEnabled( );
-    settings->setWindowSize( 1280, 720 );
-    settings->setTitle( u8"toon2_matching_room" );
-    settings->setResizable( false );
-} )
+void setting( cinder::app::App::Settings *settings )
+{
+    settings->setTitle( u8"toon2_server" );
+    settings->setConsoleWindowEnabled( );
+}
+hardptr<scene> main( )
+{
+    return user::default_scene::create( );
+}
+}

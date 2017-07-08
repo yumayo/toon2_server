@@ -1,11 +1,12 @@
 ﻿#include "receive_data_execute.h"
-#include "string_utility.h"
+#include <treelike/utility/string.h>
 #include "noticed.hpp"
-#include "boost/lexical_cast.hpp"
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
-receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
-                                            network::udp_connection & udp_connection,
+receive_data_execute::receive_data_execute( treelike::network::tcp_server& tcp_connection,
+                                            treelike::network::udp_connection & udp_connection,
                                             user::bullet_manager& bullet_manager,
                                             user::ground_color_manager& ground_color_manager,
                                             user::feed_manager& feed_manager,
@@ -31,7 +32,7 @@ receive_data_execute::receive_data_execute( network::tcp_server& tcp_connection,
 
     #undef regist_operation
 }
-void receive_data_execute::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void receive_data_execute::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     auto& function_name = root["name"];
     if ( function_name.isString( ) )
@@ -44,17 +45,17 @@ void receive_data_execute::udp_receive_entry_point( network::network_handle hand
         }
         else
         {
-            utility::log_network( handle->ip_address, handle->port,
+            utility::log_network( handle.ip_address, handle.port,
                                   "name と一致する命令が見つかりませんでした。" );
         }
     }
     else
     {
-        utility::log_network( handle->ip_address, handle->port,
+        utility::log_network( handle.ip_address, handle.port,
                               "name が見つからない不正なデータです。" );
     }
 }
-void receive_data_execute::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void receive_data_execute::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     auto& function_name = root["name"];
     if ( function_name.isString( ) )
@@ -63,19 +64,19 @@ void receive_data_execute::tcp_receive_entry_point( network::client_handle handl
         auto itr = _noticed_objects.find( name );
         if ( itr != _noticed_objects.end( ) )
         {
-            utility::log_network( handle.ip_address, boost::lexical_cast<int>( handle.port ),
+            utility::log_network( handle.ip_address, handle.port,
                                   "[%s]命令実行", function_name.asString( ).c_str( ) );
             itr->second->tcp_receive_entry_point( handle, root );
         }
         else
         {
-            utility::log_network( handle.ip_address, boost::lexical_cast<int>( handle.port ),
+            utility::log_network( handle.ip_address, handle.port,
                                   "name と一致する命令が見つかりませんでした。" );
         }
     }
     else
     {
-        utility::log_network( handle.ip_address, boost::lexical_cast<int>( handle.port ),
+        utility::log_network( handle.ip_address, handle.port,
                               "name が見つからない不正なデータです。" );
     }
 }
@@ -88,11 +89,11 @@ std::shared_ptr<noticed::noticed_base> receive_data_execute::find( std::string n
     }
     return nullptr;
 }
-network::tcp_server & receive_data_execute::tcp( )
+treelike::network::tcp_server & receive_data_execute::tcp( )
 {
     return _tcp_connection;
 }
-network::udp_connection & receive_data_execute::udp( )
+treelike::network::udp_connection & receive_data_execute::udp( )
 {
     return _udp_connection;
 }

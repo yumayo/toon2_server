@@ -1,6 +1,7 @@
 #include "user_handle_manager.h"
-#include "user_default.h"
-#include "boost/lexical_cast.hpp"
+#include <treelike/user_default.h>
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
 int user_handle_manager::INVALID_ID = 0;
@@ -23,33 +24,25 @@ std::pair<bool, std::map<int, user_handle>::iterator> user_handle_manager::find_
     auto itr = _user_handles.find( id );
     return std::make_pair( itr != _user_handles.end( ), itr );
 }
-int user_handle_manager::find_id( network::client_handle handle )
+int user_handle_manager::find_id( treelike::network::network_handle handle )
 {
     for ( auto& h : _user_handles )
-        if ( h.second.ip_address == handle.ip_address && 
-            ( h.second.tcp_port == boost::lexical_cast<int>( handle.port ) || h.second.udp_port == boost::lexical_cast<int>( handle.port ) ) )
+        if ( h.second.ip_address == handle.ip_address &&
+            ( h.second.tcp_port == handle.port || h.second.udp_port == handle.port ) )
             return h.first;
     return INVALID_ID;
 }
-int user_handle_manager::find_id( network::network_handle handle )
+int user_handle_manager::find_tcp_port( treelike::network::network_handle handle )
 {
     for ( auto& h : _user_handles )
-        if ( h.second.ip_address == handle->ip_address &&
-            ( h.second.tcp_port == handle->port || h.second.udp_port == handle->port ) )
-            return h.first;
-    return INVALID_ID;
-}
-int user_handle_manager::find_tcp_port( network::network_handle handle )
-{
-    for ( auto& h : _user_handles )
-        if ( h.second.ip_address == handle->ip_address && h.second.udp_port == handle->port )
+        if ( h.second.ip_address == handle.ip_address && h.second.udp_port == handle.port )
             return h.second.tcp_port;
     return INVALID_ID;
 }
-int user_handle_manager::find_udp_port( network::client_handle handle )
+int user_handle_manager::find_udp_port( treelike::network::network_handle handle )
 {
     for ( auto& h : _user_handles )
-        if ( h.second.ip_address == handle.ip_address && h.second.tcp_port == boost::lexical_cast<int>( handle.port ) )
+        if ( h.second.ip_address == handle.ip_address && h.second.tcp_port == handle.port )
             return h.second.udp_port;
     return INVALID_ID;
 }

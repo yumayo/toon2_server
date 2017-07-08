@@ -1,7 +1,9 @@
 #include "ground_color_manager.h"
-#include "user_default.h"
+#include <treelike/user_default.h>
 #include "bullet_manager.h"
 #include "bullet.h"
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
 CREATE_CPP( ground_color_manager )
@@ -15,7 +17,7 @@ bool ground_color_manager::init( )
     _ground_color_id = std::vector<std::vector<unsigned char>>( ground_size, std::vector<unsigned char>( ground_size ) );
     return true;
 }
-void ground_color_manager::set_bullet_manager( std::weak_ptr<node> bullet_manager )
+void ground_color_manager::set_bullet_manager( softptr<treelike::node> bullet_manager )
 {
     _bullet_manager = bullet_manager;
 }

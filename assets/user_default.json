@@ -1,9 +1,0 @@
-{
-   "bullet_radius" : 20,
-   "ground_scale" : 16,
-   "ground_size" : 64,
-   "maximum_clients" : 255,
-   "number_of_feed" : 50,
-   "tcp_port" : 25564,
-   "udp_port" : 25565
-}

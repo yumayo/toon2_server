@@ -1,7 +1,6 @@
 ﻿#include "close.h"
 #include "find_room.h"
 #include "check_handle.h"
-#include "boost/lexical_cast.hpp"
 #include "ground.h"
 namespace user
 {
@@ -11,10 +10,10 @@ close::close( receive_data_execute& execute )
     : noticed_base( execute )
 {
 }
-void close::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void close::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
 }
-void close::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void close::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     Json::Value r;
     r["name"] = "close_client";

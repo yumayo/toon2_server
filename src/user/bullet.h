@@ -1,8 +1,8 @@
 #pragma once
-#include "node.h"
+#include <treelike/node.h>
 namespace user
 {
-class bullet : public node
+class bullet : public treelike::node
 {
 public:
     bool init( cinder::vec2 position, cinder::vec2 direction, int bullet_id );

@@ -1,5 +1,7 @@
 #include "feed_manager.h"
-#include "user_default.h"
+#include <treelike/user_default.h>
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
 CREATE_CPP( feed_manager )
@@ -25,9 +27,6 @@ std::shared_ptr<feed> feed_manager::add_feed( )
 }
 void feed_manager::remove( int id )
 {
-    for ( auto& c : get_children( ) )
-    {
-        if ( c->get_tag( ) == id ) c->remove_from_parent( );
-    }
+    remove_child_by_tag( id );
 }
 }

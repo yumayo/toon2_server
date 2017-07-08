@@ -1,7 +1,6 @@
 ﻿#include "blowout.h"
 #include "find_room.h"
 #include "check_handle.h"
-#include "boost/lexical_cast.hpp"
 #include "ground.h"
 namespace user
 {
@@ -11,10 +10,10 @@ blowout::blowout( receive_data_execute& execute )
     : noticed_base( execute )
 {
 }
-void blowout::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void blowout::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
 }
-void blowout::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void blowout::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     _execute.bullet_mgr( ).remove( root["data"]["id"].asInt( ) );
 

@@ -1,5 +1,7 @@
 #include "bullet.h"
-#include "action.hpp"
+#include <treelike/action.hpp>
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
 bool bullet::init( cinder::vec2 position, cinder::vec2 direction, int bullet_id )

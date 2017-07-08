@@ -1,8 +1,8 @@
 ﻿#include "default_scene.h"
-#include "network.hpp"
-#include "boost/lexical_cast.hpp"
-#include "user_default.h"
+#include <treelike/network.hpp>
+#include <treelike/user_default.h>
 using namespace cinder;
+using namespace treelike;
 namespace user
 {
 CREATE_CPP( default_scene )
@@ -15,7 +15,7 @@ bool default_scene::init( )
     int tcp_port = user_default::get_instans( )->get_root( )["tcp_port"].asInt( );
     int maximum_clients = user_default::get_instans( )->get_root( )["maximum_clients"].asInt( );
 
-    auto tcp = add_child( network::tcp_server::create( boost::lexical_cast<std::string>( tcp_port ), maximum_clients ) );
+    auto tcp = add_child( network::tcp_server::create( tcp_port, maximum_clients ) );
     auto udp = add_child( network::udp_connection::create( udp_port ) );
     auto bullet_manager = add_child( bullet_manager::create( ) );
     auto ground_color_manager = add_child( ground_color_manager::create( ) );
@@ -29,7 +29,7 @@ bool default_scene::init( )
                                                            *feed_manager,
                                                            *user_handle_manager );
 
-    tcp->on_readed = [ this ] ( network::client_handle const& handle, char const* data, size_t byte )
+    tcp->on_readed = [ this ] ( network::network_handle const& handle, char const* data, size_t byte )
     {
         Json::Value root;
         if ( Json::Reader( ).parse( std::string( data, byte ), root ) )
@@ -41,13 +41,13 @@ bool default_scene::init( )
     {
         _receive_exe->udp_receive_entry_point( handle, root );
     };
-    tcp->on_client_disconnected = [ this ] ( network::client_handle const& handle )
+    tcp->on_client_disconnected = [ this ] ( network::network_handle const& handle )
     {
         Json::Value root;
         root["name"] = "close";
         _receive_exe->tcp_receive_entry_point( handle, root );
     };
-    tcp->on_errored = [ this ] ( network::client_handle const& handle, asio::error_code const& )
+    tcp->on_errored = [ this ] ( network::network_handle const& handle, boost::system::error_code const& )
     {
         Json::Value root;
         root["name"] = "close";

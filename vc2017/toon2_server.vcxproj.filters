@@ -1,0 +1,156 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\user">
+      <UniqueIdentifier>{ffd366f9-6b5d-4cab-af5e-7b455003842b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\user\noticed">
+      <UniqueIdentifier>{e5e6c250-964e-4462-aa1e-048ae5f6c80b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\src\user\noticed\blowout.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\check_handle.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\close.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\create_bullet.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\feed_captured.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\find_room.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\ground.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\noticed_base.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed\player_on_captured.h">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\bullet.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\bullet_manager.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\default_scene.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\feed.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\feed_manager.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\ground_color_manager.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\noticed.hpp">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\receive_data_execute.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\synchronization_objects.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\user_handle.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\user\user_handle_manager.h">
+      <Filter>Source Files\user</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\user\noticed\blowout.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\check_handle.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\close.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\create_bullet.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\feed_captured.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\find_room.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\ground.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\noticed_base.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\noticed\player_on_captured.cpp">
+      <Filter>Source Files\user\noticed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\bullet.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\bullet_manager.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\default_scene.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\feed.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\feed_manager.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\ground_color_manager.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\receive_data_execute.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\user_handle.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\user\user_handle_manager.cpp">
+      <Filter>Source Files\user</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

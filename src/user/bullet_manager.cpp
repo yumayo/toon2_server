@@ -1,6 +1,8 @@
 #include "bullet_manager.h"
-#include "action.hpp"
+#include <treelike/action.hpp>
 #include "default_scene.h"
+using namespace cinder;
+using namespace treelike;
 namespace user
 {
 CREATE_CPP( bullet_manager )
@@ -30,17 +32,11 @@ void bullet_manager::remove( int bullet_id )
 {
     for ( auto& folder : get_children( ) )
     {
-        for ( auto& c : folder->get_children( ) )
-        {
-            if ( c->get_tag( ) == bullet_id ) c->remove_from_parent( );
-        }
+        folder->remove_child_by_tag( bullet_id );
     }
 }
 void bullet_manager::clear( int user_id )
 {
-    for ( auto& folder : get_children( ) )
-    {
-        if ( folder->get_tag( ) == user_id ) folder->remove_from_parent( );
-    }
+    remove_child_by_tag( user_id );
 }
 }

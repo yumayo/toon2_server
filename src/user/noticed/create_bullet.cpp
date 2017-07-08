@@ -1,9 +1,8 @@
 ﻿#include "create_bullet.h"
 #include "find_room.h"
 #include "check_handle.h"
-#include "boost/lexical_cast.hpp"
 #include "../bullet.h"
-#include "user_default.h"
+#include <treelike/user_default.h>
 using namespace cinder;
 namespace user
 {
@@ -13,10 +12,10 @@ create_bullet::create_bullet( receive_data_execute& execute )
     : noticed_base( execute )
 {
 }
-void create_bullet::udp_receive_entry_point( network::network_handle handle, Json::Value const & root )
+void create_bullet::udp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
 }
-void create_bullet::tcp_receive_entry_point( network::client_handle handle, Json::Value const & root )
+void create_bullet::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const & root )
 {
     int index = 0;
     Json::Value r;
