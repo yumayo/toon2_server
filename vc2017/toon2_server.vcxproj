@@ -207,6 +207,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\user\bullet.cpp" />
     <ClCompile Include="..\src\user\bullet_manager.cpp" />
+    <ClCompile Include="..\src\user\bullet_straight.cpp" />
     <ClCompile Include="..\src\user\default_scene.cpp" />
     <ClCompile Include="..\src\user\feed.cpp" />
     <ClCompile Include="..\src\user\feed_manager.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\user\bullet.h" />
     <ClInclude Include="..\src\user\bullet_manager.h" />
+    <ClInclude Include="..\src\user\bullet_straight.h" />
     <ClInclude Include="..\src\user\default_scene.h" />
     <ClInclude Include="..\src\user\feed.h" />
     <ClInclude Include="..\src\user\feed_manager.h" />

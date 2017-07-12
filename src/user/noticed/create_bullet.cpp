@@ -22,15 +22,19 @@ void create_bullet::tcp_receive_entry_point( treelike::network::network_handle h
     r["name"] = "create_bullet";
     for ( auto& data : root["data"] )
     {
-        auto pos = vec2( data["position"][0].asFloat( ), data["position"][1].asFloat( ) );
-        auto direction = vec2( data["direction"][0].asFloat( ), data["direction"][1].asFloat( ) );
+        auto start_position = vec2( data["start_position"][0].asFloat( ), data["start_position"][1].asFloat( ) );
+        auto end_position = vec2( data["end_position"][0].asFloat( ), data["end_position"][1].asFloat( ) );
         auto user_id = data["user_id"].asInt( );
-        auto bullet = _execute.bullet_mgr( ).add_bullet( pos, direction, user_id );
+        auto bullet = _execute.bullet_mgr( ).add_bullet( user_id, 20.0F, start_position, end_position );
         r["data"][index] = data;
         r["data"][index]["bullet_id"] = bullet->get_tag( );
         index++;
     }
-    _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
+    for ( auto& client : _execute.tcp( ).get_clients( ) )
+    {
+        if ( client == handle ) continue;
+        _execute.tcp( ).write( client, Json::FastWriter( ).write( r ) );
+    }
 }
 }
 }

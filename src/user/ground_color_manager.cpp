@@ -23,6 +23,20 @@ void ground_color_manager::set_bullet_manager( softptr<treelike::node> bullet_ma
 }
 void ground_color_manager::update( float delta )
 {
+    if ( _is_inserted )
+    {
+        for ( int i = _min_insert_iterator; i < _past_paint_datas.size( ); ++i )
+        {
+            paint_circle( _past_paint_datas[i].time,
+                          Rectf( _past_paint_datas[i].position - _past_paint_datas[i].radius,
+                                 _past_paint_datas[i].position + _past_paint_datas[i].radius ),
+                          _past_paint_datas[i].radius,
+                          _past_paint_datas[i].user_id );
+        }
+        _is_inserted = false;
+        _min_insert_iterator = 0;
+    }
+
     auto bullet_manager = std::dynamic_pointer_cast<user::bullet_manager>( _bullet_manager.lock( ) );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
     for ( auto const& folder : bullet_manager->get_children( ) )
@@ -36,10 +50,21 @@ void ground_color_manager::update( float delta )
 
                 cinder::Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
 
-                paint_circle( rect, radius, folder->get_tag( ) );
+                paint_circle( app::getElapsedSeconds( ), rect, radius, folder->get_tag( ) );
             }
         }
     }
+
+    // 古いデータは切り捨てます。
+    int i = 0;
+    for ( ; i < _past_paint_datas.size( ); ++i )
+    {
+        if ( _past_paint_datas[i].time > app::getElapsedSeconds( ) - 0.5F )
+        {
+            break;
+        }
+    }
+    _past_paint_datas.erase( _past_paint_datas.begin( ), _past_paint_datas.begin( ) + i );
 }
 std::vector<std::vector<unsigned char>>& ground_color_manager::get_ground_color_id( )
 {
@@ -59,8 +84,21 @@ void ground_color_manager::clear( int const & user_id )
         }
     }
 }
-void ground_color_manager::paint_circle( cinder::Rectf rect, float radius, int user_id )
+void ground_color_manager::insert( float time, cinder::vec2 position, float radius, int user_id )
 {
+    _is_inserted = true;
+    int i = std::max( 0, (int)_past_paint_datas.size( ) - 1 );
+    for ( ; i >= 0; --i )
+    {
+        if ( _past_paint_datas[i].time < time ) break;
+    }
+    _min_insert_iterator = i;
+    _past_paint_datas.insert( _past_paint_datas.begin( ) + i, paint_data( { time, position, radius, user_id } ) );
+}
+void ground_color_manager::paint_circle( float time, cinder::Rectf rect, float radius, int user_id )
+{
+    _past_paint_datas.push_back( { time, rect.getCenter( ), radius, user_id } );
+
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
 

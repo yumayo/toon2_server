@@ -67,14 +67,34 @@ void ground::udp_receive_entry_point( treelike::network::network_handle handle, 
     auto ground_size = user_default::get_instans( )->get_root( )["ground_size"].asInt( );
     auto ground_scale = user_default::get_instans( )->get_root( )["ground_scale"].asInt( );
 
-    auto radius = root["data"]["radius"].asFloat( ) / ground_scale;
-
-    auto pixel = vec2( root["data"]["position"][0].asFloat( ) / ground_scale,
-                       root["data"]["position"][1].asFloat( ) / ground_scale );
-
-    Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
-
-    _execute.ground_color_mgr( ).paint_circle( rect, radius, id );
+    std::vector<cell_data> cell_datas;
+    for ( auto& data : root["data"] )
+    {
+        cell_datas.push_back( { data["frame"].asInt( ), data["time"].asFloat( ), data["radius"].asFloat( ),
+                              vec2( data["position"][0].asFloat( ), data["position"][1].asFloat( ) ) } );
+    }
+    auto& prev_cell_datas = _prev_enemy_datas[handle];
+    // パケットロスがあったら
+    if ( !prev_cell_datas.empty( ) && cell_datas.back( ).frame - 2 == prev_cell_datas.back( ).frame )
+    {
+        auto packet_loss_frame = ( cell_datas.back( ).frame - 1 ) - prev_cell_datas.back( ).frame;
+        if ( cell_datas.size( ) < packet_loss_frame ) throw std::runtime_error( "ぱけろありすぎ" );
+        auto& data = cell_datas[cell_datas.size( ) - packet_loss_frame];
+        float packet_loss_time = data.time;
+        int user_id = _execute.user_handle_mgr( ).find_id( handle );
+        for ( int i = cell_datas.size( ) - packet_loss_frame; i < cell_datas.size( ); ++i )
+        {
+            _execute.ground_color_mgr( ).insert( cell_datas[i].time, cell_datas[i].position, cell_datas[i].radius, user_id );
+        }
+    }
+    else
+    {
+        auto radius = cell_datas.back( ).radius / ground_scale;
+        auto pixel = cell_datas.back( ).position / (float)ground_scale;
+        Rectf rect( glm::floor( pixel - radius - 1.0F ), glm::ceil( pixel + radius ) );
+        _execute.ground_color_mgr( ).paint_circle( cell_datas.back( ).time, rect, radius, id );
+    }
+    _prev_enemy_datas[handle] = cell_datas;
 }
 void ground::tcp_receive_entry_point( treelike::network::network_handle handle, Json::Value const& root )
 {
