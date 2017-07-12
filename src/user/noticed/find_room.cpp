@@ -89,16 +89,16 @@ void find_room::tcp_receive_entry_point( treelike::network::network_handle handl
                     int j = 0;
                     for ( auto& bullet_node : folder->get_children( ) )
                     {
-                        //auto bullet = std::dynamic_pointer_cast<user::bullet_straight>( bullet_node );
-                        //auto& data = r["data"][i][j];
-                        //data["start_position"][0] = bullet->get_position( ).x;
-                        //data["start_position"][1] = bullet->get_position( ).y;
-                        //data["end_position"][0] = bullet->get_direction( ).x;
-                        //data["end_position"][1] = bullet->get_direction( ).y;
-                        //data["user_id"] = folder->get_tag( );
-                        //data["bullet_id"] = bullet->get_tag( );
-                        //data["time_offset"] = bullet->get_time_remaining( );
-                        //j++;
+                        auto bullet = std::dynamic_pointer_cast<user::bullet_straight>( bullet_node );
+                        auto& data = r["data"][i][j];
+                        data["user_id"] = folder->get_tag( );
+                        data["bullet_id"] = bullet->get_tag( );
+                        data["time"] = bullet->get_time_remaining( );
+                        data["start_position"][0] = bullet->get_position( ).x;
+                        data["start_position"][1] = bullet->get_position( ).y;
+                        data["end_position"][0] = bullet->get_end_position( ).x;
+                        data["end_position"][1] = bullet->get_end_position( ).y;
+                        j++;
                     }
                     i++;
                 }

@@ -11,6 +11,7 @@ CREATE_CPP( bullet_straight, int bullet_id, float radius, cinder::vec2 start_pos
 bool bullet_straight::init( int bullet_id, float radius, cinder::vec2 start_position, cinder::vec2 end_position )
 {
     bullet::init( bullet_id, radius, start_position );
+    _end_position = end_position;
     _time_remaining = 2.0F;
     run_action( action::sequence::create( action::move_to::create( _time_remaining, end_position ), 
                                           action::remove_self::create( ) ) );
@@ -23,5 +24,9 @@ void bullet_straight::update( float delta )
 float bullet_straight::get_time_remaining( ) const
 {
     return _time_remaining;
+}
+cinder::vec2 bullet_straight::get_end_position( ) const
+{
+    return _end_position;
 }
 }

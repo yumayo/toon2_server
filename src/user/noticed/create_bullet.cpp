@@ -25,9 +25,10 @@ void create_bullet::tcp_receive_entry_point( treelike::network::network_handle h
         auto start_position = vec2( data["start_position"][0].asFloat( ), data["start_position"][1].asFloat( ) );
         auto end_position = vec2( data["end_position"][0].asFloat( ), data["end_position"][1].asFloat( ) );
         auto user_id = data["user_id"].asInt( );
-        auto bullet = _execute.bullet_mgr( ).add_bullet( user_id, 20.0F, start_position, end_position );
+        auto bullet_id = data["bullet_id"].asInt( );
+        auto radius = data["radius"].asFloat( );
+        auto bullet = _execute.bullet_mgr( ).add_bullet( user_id, bullet_id, radius, start_position, end_position );
         r["data"][index] = data;
-        r["data"][index]["bullet_id"] = bullet->get_tag( );
         index++;
     }
     for ( auto& client : _execute.tcp( ).get_clients( ) )

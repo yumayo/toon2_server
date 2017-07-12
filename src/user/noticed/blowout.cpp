@@ -20,6 +20,7 @@ void blowout::tcp_receive_entry_point( treelike::network::network_handle handle,
     Json::Value r;
     r["name"] = "erase_bullet";
     r["data"]["id"] = root["data"]["id"].asInt( );
+    r["data"]["user_id"] = root["data"]["user_id"].asInt( );
     _execute.tcp( ).speech( Json::FastWriter( ).write( r ) );
 }
 }
